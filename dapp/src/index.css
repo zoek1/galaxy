@@ -1,7 +1,8 @@
 :root {
-  --color-title:#1a1a1a;
+  --color-title: #1a1a1a;
   --button-primary: #1e90ff;
   --button-text: #ffffff;
+  --border-form: #a6a6a6;
 }
 
 #root{
@@ -26,4 +27,20 @@
   background-color: var(--button-primary);
   color: var(--button-text);
   width: 200px;
+}
+
+form div{
+  margin: 1em;
+}
+
+form label{
+  margin: 0 1em;
+}
+
+.disc{
+  margin: 2em;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border-form);
+  border-radius: 10px;
 }
