@@ -1,10 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
+import './index.css';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 
 import { NetworkType, DAppClient } from '@airgap/beacon-sdk';
+
+import IndexPage from './pages/IndexPage';
+import NewCampaignPage from './pages/NewCampaignPage';
 
 export default function App() {
   const [address, setAddress] = useState('');
@@ -34,11 +38,14 @@ export default function App() {
     {
       path: "/",
       element: <IndexPage address={address} onLogin={onLogin} onLogout={onLogout} />
+    },
+    {
+      path:"/new",
+      element: <NewCampaignPage/>
     }
   ]);
 
-  return (<div>
+  return (
     <RouterProvider router={router} />
-  </div>
   );
 }

@@ -1,0 +1,29 @@
+:root {
+  --color-title:#1a1a1a;
+  --button-primary: #1e90ff;
+  --button-text: #ffffff;
+}
+
+#root{
+  height: 100vh;
+}
+
+.IndexPage h1{
+  font-size: 3rem;
+}
+
+.title {
+    margin: 1em 5em;
+    color: var(--color-title);
+}
+
+.content-button{
+    margin: 1em 5em;
+}
+
+.content-button .btn{
+  margin: 1em;
+  background-color: var(--button-primary);
+  color: var(--button-text);
+  width: 200px;
+}
