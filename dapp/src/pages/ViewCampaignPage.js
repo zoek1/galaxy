@@ -1,4 +1,5 @@
 import React from 'react'
+import Navbar from '../components/Navbar'
 import IntegrationButton from '../components/IntegrationButton'
 
 const Fields = [
@@ -26,14 +27,17 @@ const Fields = [
 
 function ViewCampaignPage (){
   return(
-    <div className="view container d-flex flex-column align-items-center justify-content-center h-100">
-      {
-        Fields.map(field =>(
-          <div key={field.id}>
-            <IntegrationButton name={field.name} imageIcon={field.image}/>
-          </div>
-        ))
-      }
+    <div>
+      <Navbar/>
+      <div className="view container d-flex flex-column align-items-center justify-content-center h-100">
+        {
+          Fields.map(field =>(
+            <div key={field.id}>
+              <IntegrationButton name={field.name} imageIcon={field.image}/>
+            </div>
+          ))
+        }
+      </div>
     </div>
   )
 }
