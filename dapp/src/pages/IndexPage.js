@@ -11,7 +11,7 @@ const IndexPage = (props) => {
           </div>
           <div className="content-button">
             <Link to={'/new'}><button className="btn1 btn btn-primary ">New Campaign</button></Link>
-            <Link to={'/new'}><button className="btn2 btn btn-primary">View Campaign</button></Link>
+            <Link to={'/campaign'}><button className="btn2 btn btn-primary">View Campaign</button></Link>
           </div>
         </div>
     );

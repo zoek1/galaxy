@@ -44,3 +44,17 @@ form label{
   border-color: var(--border-form);
   border-radius: 10px;
 }
+
+.contentButton{
+  margin: 0 2em 1em 2em;
+  padding: 0!important;
+}
+
+.contentButton div i{
+  padding: 0.8em 1em;
+}
+
+.contentButton a{
+  text-decoration: none;
+  width: 25em;
+}
