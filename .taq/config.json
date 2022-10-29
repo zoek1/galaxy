@@ -1,21 +1,13 @@
 {
     "language": "en",
-    "plugins": [
-        {
-            "name": "@taqueria/plugin-ligo",
-            "type": "npm"
-        },
-        {
-            "name": "@taqueria/plugin-flextesa",
-            "type": "npm"
-        },
-        {
-            "name": "@taqueria/plugin-taquito",
-            "type": "npm"
-        }
-    ],
     "contractsDir": "contracts",
     "artifactsDir": "artifacts",
+    "contracts": {
+        "LoyalToken.mligo": {
+            "sourceFile": "LoyalToken.mligo",
+            "hash": "5bd83e99913ddac977a2b3ee66252a1646d8eee0db133a344aac7207b8c834b7"
+        }
+    },
     "network": {
         "ghostnet": {
             "label": "ghostnet",
@@ -29,7 +21,7 @@
             "rpcUrl": "http://localhost:20000",
             "protocol": "PtKathmankSpLLDALzWw7CGD2j2MtyveTwboEYokqUCP4a1LxMg",
             "accounts": {
-                "default": "bob",
+                "default": "alice",
                 "bob": {
                     "encryptedKey": "edpkurPsQ8eUApnLUJ9ZPDvu98E8VNj4KtJa1aZr16Cr5ow5VHKnz4",
                     "publicKeyHash": "tz1aSkwEot3L2kmUvcoxzjMomb9mvBNuzFK6",
@@ -68,6 +60,9 @@
             "aliases": {
                 "LoyalToken": {
                     "address": "KT1Up1zpSD3HhgwGCtsQav9JG45ffAShdGAR"
+                },
+                "Campaign": {
+                    "address": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP"
                 }
             }
         },
@@ -85,10 +80,21 @@
         "jane": "3_000_000_000",
         "joe": "3_000_000_000"
     },
-    "contracts": {
-        "LoyalToken.mligo": {
-            "sourceFile": "LoyalToken.mligo",
-            "hash": "5bd83e99913ddac977a2b3ee66252a1646d8eee0db133a344aac7207b8c834b7"
+    "plugins": [
+        {
+            "name": "@taqueria/plugin-ligo",
+            "type": "npm"
+        },
+        {
+            "name": "@taqueria/plugin-flextesa",
+            "type": "npm"
+        },
+        {
+            "name": "@taqueria/plugin-taquito",
+            "type": "npm"
         }
-    }
+    ],
+    "projectDir": "/home/ma/code/bounties/loyalty-dapp",
+    "configFile": "/home/ma/code/bounties/loyalty-dapp/.taq/config.json",
+    "hash": "5145e10e9b3f90a29c83d12da7eac7bb7d515e6d35acd34e5cb7e140666f8c08"
 }

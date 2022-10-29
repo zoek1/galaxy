@@ -1,51 +1,6 @@
 {
     "operations": {},
     "tasks": {
-        "@taqueria/plugin-flextesa.list accounts.1666923184475": {
-            "task": "list accounts",
-            "plugin": "@taqueria/plugin-flextesa",
-            "time": 1666923184475,
-            "output": [
-                {
-                    "account": "bob",
-                    "balance": "3000 ꜩ",
-                    "address": "tz1aSkwEot3L2kmUvcoxzjMomb9mvBNuzFK6"
-                },
-                {
-                    "account": "alice",
-                    "balance": "3000 ꜩ",
-                    "address": "tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb"
-                },
-                {
-                    "account": "john",
-                    "balance": "3000 ꜩ",
-                    "address": "tz1Zwoh1QCVAvJ4sVTojMp9pLYp6Ji4NoZy6"
-                },
-                {
-                    "account": "jane",
-                    "balance": "3000 ꜩ",
-                    "address": "tz1aHUAC4oviwJuZF1EvVSvFz7cu9KMNYBph"
-                },
-                {
-                    "account": "joe",
-                    "balance": "3000 ꜩ",
-                    "address": "tz1MVGjgD1YtAPwohsSfk8i3ZiT1yEGM2YXB"
-                }
-            ]
-        },
-        "@taqueria/plugin-taquito.deploy.1666923249283": {
-            "task": "deploy",
-            "plugin": "@taqueria/plugin-taquito",
-            "time": 1666923249283,
-            "output": [
-                {
-                    "contract": "LoyalToken.tz",
-                    "address": "KT1Up1zpSD3HhgwGCtsQav9JG45ffAShdGAR",
-                    "alias": "LoyalToken",
-                    "destination": "local"
-                }
-            ]
-        },
         "@taqueria/plugin-flextesa.list accounts.1666923264232": {
             "task": "list accounts",
             "plugin": "@taqueria/plugin-flextesa",
@@ -75,21 +30,6 @@
                     "account": "joe",
                     "balance": "3000 ꜩ",
                     "address": "tz1MVGjgD1YtAPwohsSfk8i3ZiT1yEGM2YXB"
-                }
-            ]
-        },
-        "@taqueria/plugin-taquito.transfer.1666923353175": {
-            "task": "transfer",
-            "plugin": "@taqueria/plugin-taquito",
-            "time": 1666923353176,
-            "output": [
-                {
-                    "contractAlias": "LoyalToken",
-                    "contractAddress": "KT1Up1zpSD3HhgwGCtsQav9JG45ffAShdGAR",
-                    "tezTransfer": "0",
-                    "parameter": "(Right\n   (Pair \"tz1aSkwEot3L2kmUvcoxzjMomb9mvBNuzFK6\"\n         \"tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb\"\n         100))\n\n",
-                    "entrypoint": "default",
-                    "destination": "http://localhost:20000"
                 }
             ]
         },
@@ -157,66 +97,6 @@
                 }
             ]
         },
-        "@taqueria/plugin-taquito.transfer.1666923488446": {
-            "task": "transfer",
-            "plugin": "@taqueria/plugin-taquito",
-            "time": 1666923488446,
-            "output": [
-                {
-                    "contractAlias": "LoyalToken",
-                    "contractAddress": "KT1Up1zpSD3HhgwGCtsQav9JG45ffAShdGAR",
-                    "tezTransfer": "0",
-                    "parameter": "(Right\n   (Pair \"tz1aSkwEot3L2kmUvcoxzjMomb9mvBNuzFK6\"\n         \"tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb\"\n         100))\n\n",
-                    "entrypoint": "default",
-                    "destination": "http://localhost:20000"
-                }
-            ]
-        },
-        "@taqueria/plugin-taquito.transfer.1666923878678": {
-            "task": "transfer",
-            "plugin": "@taqueria/plugin-taquito",
-            "time": 1666923878678,
-            "output": [
-                {
-                    "contractAlias": "LoyalToken",
-                    "contractAddress": "KT1Up1zpSD3HhgwGCtsQav9JG45ffAShdGAR",
-                    "tezTransfer": "0",
-                    "parameter": "(Right\n   (Pair \"tz1aSkwEot3L2kmUvcoxzjMomb9mvBNuzFK6\"\n         \"tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb\"\n         100))\n\n",
-                    "entrypoint": "default",
-                    "destination": "http://localhost:20000"
-                }
-            ]
-        },
-        "@taqueria/plugin-taquito.transfer.1666924113294": {
-            "task": "transfer",
-            "plugin": "@taqueria/plugin-taquito",
-            "time": 1666924113294,
-            "output": [
-                {
-                    "contractAlias": "LoyalToken",
-                    "contractAddress": "KT1Up1zpSD3HhgwGCtsQav9JG45ffAShdGAR",
-                    "tezTransfer": "0",
-                    "parameter": "(Right\n   (Pair \"tz1aSkwEot3L2kmUvcoxzjMomb9mvBNuzFK6\"\n         \"tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb\"\n         100))\n\n",
-                    "entrypoint": "default",
-                    "destination": "http://localhost:20000"
-                }
-            ]
-        },
-        "@taqueria/plugin-taquito.transfer.1666924464188": {
-            "task": "transfer",
-            "plugin": "@taqueria/plugin-taquito",
-            "time": 1666924464188,
-            "output": [
-                {
-                    "contractAlias": "LoyalToken",
-                    "contractAddress": "KT1Up1zpSD3HhgwGCtsQav9JG45ffAShdGAR",
-                    "tezTransfer": "0",
-                    "parameter": "(Right\n   (Pair \"tz1aSkwEot3L2kmUvcoxzjMomb9mvBNuzFK6\"\n         \"tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb\"\n         100))\n\n",
-                    "entrypoint": "default",
-                    "destination": "http://localhost:20000"
-                }
-            ]
-        },
         "@taqueria/plugin-flextesa.list accounts.1666924843964": {
             "task": "list accounts",
             "plugin": "@taqueria/plugin-flextesa",
@@ -249,58 +129,270 @@
                 }
             ]
         },
-        "@taqueria/plugin-ligo.compile.1666945723492": {
-            "task": "compile",
-            "plugin": "@taqueria/plugin-ligo",
-            "time": 1666945723492,
+        "@taqueria/plugin-taquito.deploy.1667024833249": {
+            "task": "deploy",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667024833250,
             "output": [
                 {
-                    "contract": "Campaign.mligo",
-                    "artifact": "Not compiled"
+                    "contract": "Campaign.tz",
+                    "address": "KT1LSBdMinp691rLJtmj2gQrMjLduDnZmGgH",
+                    "alias": "Campaign",
+                    "destination": "local"
                 }
             ]
         },
-        "@taqueria/plugin-ligo.compile.1666945734178": {
-            "task": "compile",
-            "plugin": "@taqueria/plugin-ligo",
-            "time": 1666945734178,
+        "@taqueria/plugin-taquito.deploy.1667025128538": {
+            "task": "deploy",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667025128538,
             "output": [
                 {
-                    "contract": "Campaign.mligo",
-                    "artifact": "Not compiled"
+                    "contract": "Campaign.tz",
+                    "address": "KT1Ued275VboLGgd6dQUG83m1XbCry9b6iVA",
+                    "alias": "Campaign",
+                    "destination": "local"
                 }
             ]
         },
-        "@taqueria/plugin-ligo.compile.1666945745112": {
+        "@taqueria/plugin-ligo.compile.1667025471113": {
             "task": "compile",
             "plugin": "@taqueria/plugin-ligo",
-            "time": 1666945745112,
+            "time": 1667025471113,
             "output": [
                 {
                     "contract": "Campaign.mligo",
                     "artifact": "artifacts/Campaign.tz"
-                }
-            ]
-        },
-        "@taqueria/plugin-ligo.compile.1666945776730": {
-            "task": "compile",
-            "plugin": "@taqueria/plugin-ligo",
-            "time": 1666945776730,
-            "output": [
+                },
                 {
-                    "contract": "Campaign.mligo",
-                    "artifact": "Not compiled"
+                    "contract": "Campaign.storages.mligo",
+                    "artifact": "artifacts/Campaign.default_storage.tz\n"
+                },
+                {
+                    "contract": "Campaign.parameters.mligo",
+                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redemption_brain_discord.tz\n"
                 }
             ]
         },
-        "@taqueria/plugin-ligo.compile.1666945817490": {
+        "@taqueria/plugin-ligo.compile.1667025567018": {
             "task": "compile",
             "plugin": "@taqueria/plugin-ligo",
-            "time": 1666945817490,
+            "time": 1667025567019,
             "output": [
                 {
                     "contract": "Campaign.mligo",
                     "artifact": "artifacts/Campaign.tz"
+                },
+                {
+                    "contract": "Campaign.storages.mligo",
+                    "artifact": "artifacts/Campaign.default_storage.tz\n"
+                },
+                {
+                    "contract": "Campaign.parameters.mligo",
+                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redeem_brain_discord.tz\nartifacts/Campaign.parameter.redeem_brain_discord.tz\n"
+                }
+            ]
+        },
+        "@taqueria/plugin-flextesa.list accounts.1667026366469": {
+            "task": "list accounts",
+            "plugin": "@taqueria/plugin-flextesa",
+            "time": 1667026366469,
+            "output": [
+                {
+                    "account": "bob",
+                    "balance": "2994.567221 ꜩ",
+                    "address": "tz1aSkwEot3L2kmUvcoxzjMomb9mvBNuzFK6"
+                },
+                {
+                    "account": "alice",
+                    "balance": "3000 ꜩ",
+                    "address": "tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb"
+                },
+                {
+                    "account": "john",
+                    "balance": "3000 ꜩ",
+                    "address": "tz1Zwoh1QCVAvJ4sVTojMp9pLYp6Ji4NoZy6"
+                },
+                {
+                    "account": "jane",
+                    "balance": "3000 ꜩ",
+                    "address": "tz1aHUAC4oviwJuZF1EvVSvFz7cu9KMNYBph"
+                },
+                {
+                    "account": "joe",
+                    "balance": "3000 ꜩ",
+                    "address": "tz1MVGjgD1YtAPwohsSfk8i3ZiT1yEGM2YXB"
+                }
+            ]
+        },
+        "@taqueria/plugin-ligo.compile.1667027328438": {
+            "task": "compile",
+            "plugin": "@taqueria/plugin-ligo",
+            "time": 1667027328438,
+            "output": [
+                {
+                    "contract": "Campaign.mligo",
+                    "artifact": "artifacts/Campaign.tz"
+                },
+                {
+                    "contract": "Campaign.storages.mligo",
+                    "artifact": "artifacts/Campaign.default_storage.tz\n"
+                },
+                {
+                    "contract": "Campaign.parameters.mligo",
+                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redeem_brain_discord.tz\nartifacts/Campaign.parameter.redeem_brain_discord.tz\n"
+                }
+            ]
+        },
+        "@taqueria/plugin-taquito.deploy.1667027334166": {
+            "task": "deploy",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667027334166,
+            "output": [
+                {
+                    "contract": "Campaign.tz",
+                    "address": "KT1BeAfqwXpXcVnq1G5GYFckkxdYUBw5Rb8i",
+                    "alias": "Campaign",
+                    "destination": "local"
+                }
+            ]
+        },
+        "@taqueria/plugin-ligo.compile.1667027530001": {
+            "task": "compile",
+            "plugin": "@taqueria/plugin-ligo",
+            "time": 1667027530001,
+            "output": [
+                {
+                    "contract": "Campaign.mligo",
+                    "artifact": "artifacts/Campaign.tz"
+                },
+                {
+                    "contract": "Campaign.storages.mligo",
+                    "artifact": "artifacts/Campaign.default_storage.tz\n"
+                },
+                {
+                    "contract": "Campaign.parameters.mligo",
+                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redeem_brain_discord.tz\nartifacts/Campaign.parameter.redeem_brain_discord.tz\n"
+                }
+            ]
+        },
+        "@taqueria/plugin-taquito.deploy.1667027534209": {
+            "task": "deploy",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667027534209,
+            "output": [
+                {
+                    "contract": "Campaign.tz",
+                    "address": "KT1L9pRvDRdHQyzkKhAhtgVbt7Q8cDuGdQpA",
+                    "alias": "Campaign",
+                    "destination": "local"
+                }
+            ]
+        },
+        "@taqueria/plugin-ligo.compile.1667027878749": {
+            "task": "compile",
+            "plugin": "@taqueria/plugin-ligo",
+            "time": 1667027878749,
+            "output": [
+                {
+                    "contract": "Campaign.mligo",
+                    "artifact": "artifacts/Campaign.tz"
+                },
+                {
+                    "contract": "Campaign.storages.mligo",
+                    "artifact": "artifacts/Campaign.default_storage.tz\n"
+                },
+                {
+                    "contract": "Campaign.parameters.mligo",
+                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redeem_brain_discord.tz\nartifacts/Campaign.parameter.redeem_brain_discord.tz\n"
+                }
+            ]
+        },
+        "@taqueria/plugin-taquito.deploy.1667027884682": {
+            "task": "deploy",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667027884682,
+            "output": [
+                {
+                    "contract": "Campaign.tz",
+                    "address": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP",
+                    "alias": "Campaign",
+                    "destination": "local"
+                }
+            ]
+        },
+        "@taqueria/plugin-taquito.transfer.1667027893152": {
+            "task": "transfer",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667027893152,
+            "output": [
+                {
+                    "contractAlias": "Campaign",
+                    "contractAddress": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP",
+                    "tezTransfer": "0",
+                    "parameter": "(Left (Left (Left (Right (Pair \"TELEGRAM_JOIN_GROUP\" (Pair True \"Join Telegram Group\") \"telegram\")))))\n\n",
+                    "entrypoint": "default",
+                    "destination": "http://localhost:20000"
+                }
+            ]
+        },
+        "@taqueria/plugin-taquito.transfer.1667027899023": {
+            "task": "transfer",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667027899023,
+            "output": [
+                {
+                    "contractAlias": "Campaign",
+                    "contractAddress": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP",
+                    "tezTransfer": "0",
+                    "parameter": "(Left (Left (Left (Left (Pair \"Brain_Food\"\n                              (Pair \"1970-01-16T00:00:59Z\" { Elt \"DISCORD_JOIN_CHANNEL\" 100 })\n                              \"\"\n                              \"Brain Food\")))))\n\n",
+                    "entrypoint": "default",
+                    "destination": "http://localhost:20000"
+                }
+            ]
+        },
+        "@taqueria/plugin-taquito.transfer.1667027904690": {
+            "task": "transfer",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667027904690,
+            "output": [
+                {
+                    "contractAlias": "Campaign",
+                    "contractAddress": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP",
+                    "tezTransfer": "0",
+                    "parameter": "(Left (Left (Left (Left (Pair \"CUPCAKE_IPSUM\"\n                              (Pair \"1970-01-16T00:00:59Z\"\n                                    { Elt \"DISCORD_JOIN_CHANNEL\" 100 ; Elt \"TWITTER_FOLLOW\" 30 })\n                              \"\"\n                              \"Cupcake Ipsum\")))))\n\n",
+                    "entrypoint": "default",
+                    "destination": "http://localhost:20000"
+                }
+            ]
+        },
+        "@taqueria/plugin-taquito.transfer.1667027908639": {
+            "task": "transfer",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667027908639,
+            "output": [
+                {
+                    "contractAlias": "Campaign",
+                    "contractAddress": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP",
+                    "tezTransfer": "0",
+                    "parameter": "(Left (Left (Right\n               (Right\n                  (Pair (Pair (Pair \"Brain_Food\" 100) \"DISCORD_JOIN_CHANNEL\" \"0X000000000000000000000000000000\")\n                        \"tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb\")))))\n\n",
+                    "entrypoint": "default",
+                    "destination": "http://localhost:20000"
+                }
+            ]
+        },
+        "@taqueria/plugin-taquito.transfer.1667027994144": {
+            "task": "transfer",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667027994144,
+            "output": [
+                {
+                    "contractAlias": "Campaign",
+                    "contractAddress": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP",
+                    "tezTransfer": "0",
+                    "parameter": "(Left (Right (Right (Right (Pair \"Brain_Food\" \"DISCORD_JOIN_CHANNEL\")))))\n\n",
+                    "entrypoint": "default",
+                    "destination": "http://localhost:20000"
                 }
             ]
         }

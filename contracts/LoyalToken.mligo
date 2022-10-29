@@ -1,37 +1,5 @@
-type ledger = (address, nat) big_map
-type allowances = (address * address, nat) big_map (* (sender,account) -> value *)
-
-type storage = {
-  ledger      : ledger;
-  allowances  : allowances;
-  totalSupply : nat;
-}
-
-type transfer = 
-[@layout:comb] { 
-   from : address; 
-   [@annot:to]to_: address; 
-   value: nat; 
-}
-type approve = {
-    spender : address;
-    value   : nat;
-}
-
-type getAllowance = {
-    owner    : address;
-    spender  : address;
-    callback : nat contract;
-}
-
-type getBalance = {
-    owner    : address;
-    callback : nat contract;
-}
-
-type getTotalSupply = {
-    callback : nat contract;
-}
+#include "./types/campaignStorage.mligo"
+#include "./types/tokenTypes.mligo"
 
 type action =
       Transfer       of transfer
