@@ -45,6 +45,10 @@ form label{
   border-radius: 10px;
 }
 
+.view{
+  padding: 2em;
+}
+
 .contentButton{
   margin: 0 2em 1em 2em;
   padding: 0!important;
