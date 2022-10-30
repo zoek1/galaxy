@@ -10,6 +10,7 @@ import { NetworkType, DAppClient } from '@airgap/beacon-sdk';
 import IndexPage from './pages/IndexPage';
 import NewCampaignPage from './pages/NewCampaignPage';
 import ViewCampaignPage from './pages/ViewCampaignPage';
+import ThinkPage from './pages/ThinkPage';
 
 export default function App() {
   const [address, setAddress] = useState('');
@@ -47,6 +48,10 @@ export default function App() {
     {
       path:"/campaign",
       element: <ViewCampaignPage/>
+    },
+    {
+      path:"/think",
+      element: <ThinkPage/>
     }
   ]);
 

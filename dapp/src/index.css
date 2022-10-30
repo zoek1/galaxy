@@ -62,3 +62,15 @@ form label{
   text-decoration: none;
   width: 25em;
 }
+
+.thinkPage .textareaContent{
+  width: 70%;
+}
+
+.thinkPage textarea{
+  height: 100px!important;
+}
+
+.buttonSend button{
+  margin: 2em 10em;
+}
