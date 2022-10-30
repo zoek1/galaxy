@@ -62,7 +62,7 @@
                     "address": "KT1Up1zpSD3HhgwGCtsQav9JG45ffAShdGAR"
                 },
                 "Campaign": {
-                    "address": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP"
+                    "address": "KT1JYkCQqySfhWcJByzLLXpGTYBPEreFUZTV"
                 }
             }
         },
@@ -96,5 +96,5 @@
     ],
     "projectDir": "/home/ma/code/bounties/loyalty-dapp",
     "configFile": "/home/ma/code/bounties/loyalty-dapp/.taq/config.json",
-    "hash": "5145e10e9b3f90a29c83d12da7eac7bb7d515e6d35acd34e5cb7e140666f8c08"
+    "hash": "39145c2d0791c8a05d181e502ea8e91bc2acc330ef018796a1f485fbb02a9969"
 }

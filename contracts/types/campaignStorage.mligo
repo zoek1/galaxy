@@ -2,6 +2,7 @@
 #include "./tokenIndexers.mligo"
 
 type storage = {
+    metadata           : metadata;
     integrations       : integrations;
     campaigns          : campaigns;
     user_campaigns     : user_campaigns;

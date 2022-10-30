@@ -3,6 +3,12 @@
 
 
 let initial_storage: storage = {
+  metadata           = Big_map.literal [
+    ("", Bytes.pack("https://my.token.json"));
+    ("name", Bytes.pack("Loyal Token"));
+    ("symbol", Bytes.pack("LYT"));
+    ("decimals", Bytes.pack("0"));
+  ];
   integrations       = Map.empty;
   campaigns          = Big_map.empty;
   user_campaigns     = Big_map.empty;

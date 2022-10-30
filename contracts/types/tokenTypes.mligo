@@ -1,3 +1,6 @@
+#if !TOKEN_TYPES
+#define TOKEN_TYPES
+
 type transfer = 
 [@layout:comb] { 
    from : address; 
@@ -23,3 +26,5 @@ type getBalance = {
 type getTotalSupply = {
     callback : nat contract;
 }
+
+#endif

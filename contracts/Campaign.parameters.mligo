@@ -24,19 +24,21 @@ let add_integration_twitter : action = AddIntegration ("TWITTER_FOLLOW", {
   active = true
 })
 
-let add_campaign_brain_food: action = AddCampaign (("Brain_Food" : campaign_id), {
+let add_campaign_brain_food: action = AddCampaign {
+  campaign_id = "Brain_Food";
   name = "Brain Food";
   deadline = Tezos.get_now () + (86_400 * 15); (* In Five Days *)
   integrations = Map.literal [("DISCORD_JOIN_CHANNEL", 100n)];
   metadata_url = ""
-})
+}
 
-let add_campaign_cupcake: action = AddCampaign (("CUPCAKE_IPSUM" : campaign_id), {
+let add_campaign_cupcake: action = AddCampaign {
+  campaign_id = "CUPCAKE_IPSUM";
   name = "Cupcake Ipsum";
   deadline = Tezos.get_now () + (86_400 * 15); (* In Five Days *)
   integrations = Map.literal [("DISCORD_JOIN_CHANNEL", 100n); ("TWITTER_FOLLOW", 30n)];
   metadata_url = ""
-})
+}
 
 let approve_redeem_brain_discord: action = ApproveRedeem {
   campaign = "Brain_Food";
@@ -49,4 +51,19 @@ let approve_redeem_brain_discord: action = ApproveRedeem {
 let redeem_brain_discord: action = Redeem {
   campaign = "Brain_Food";
   integration = "DISCORD_JOIN_CHANNEL";
+}
+
+let update_brain_integrations: action = UpdateCampaignIntegrations {
+  campaign_id = "Brain_Food";
+  integrations = Map.literal [("DISCORD_JOIN_CHANNEL", 100n); ("TELEGRAM_JOIN_GROUP", 80n)];
+}
+
+let update_cupcake_integrations: action = UpdateCampaignIntegrations {
+  campaign_id = "CUPCAKE_IPSUM";
+  integrations = Map.literal [("DISCORD_JOIN_CHANNEL", 100n); ];
+}
+
+let update_brain_deadline: action = UpdateCampaignDeadline {
+    campaign_id = "Brain_Food";
+    deadline = Tezos.get_now () + (86_400 * 25); (* In Five Days *)
 }

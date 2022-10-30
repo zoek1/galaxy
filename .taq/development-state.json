@@ -129,70 +129,6 @@
                 }
             ]
         },
-        "@taqueria/plugin-taquito.deploy.1667024833249": {
-            "task": "deploy",
-            "plugin": "@taqueria/plugin-taquito",
-            "time": 1667024833250,
-            "output": [
-                {
-                    "contract": "Campaign.tz",
-                    "address": "KT1LSBdMinp691rLJtmj2gQrMjLduDnZmGgH",
-                    "alias": "Campaign",
-                    "destination": "local"
-                }
-            ]
-        },
-        "@taqueria/plugin-taquito.deploy.1667025128538": {
-            "task": "deploy",
-            "plugin": "@taqueria/plugin-taquito",
-            "time": 1667025128538,
-            "output": [
-                {
-                    "contract": "Campaign.tz",
-                    "address": "KT1Ued275VboLGgd6dQUG83m1XbCry9b6iVA",
-                    "alias": "Campaign",
-                    "destination": "local"
-                }
-            ]
-        },
-        "@taqueria/plugin-ligo.compile.1667025471113": {
-            "task": "compile",
-            "plugin": "@taqueria/plugin-ligo",
-            "time": 1667025471113,
-            "output": [
-                {
-                    "contract": "Campaign.mligo",
-                    "artifact": "artifacts/Campaign.tz"
-                },
-                {
-                    "contract": "Campaign.storages.mligo",
-                    "artifact": "artifacts/Campaign.default_storage.tz\n"
-                },
-                {
-                    "contract": "Campaign.parameters.mligo",
-                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redemption_brain_discord.tz\n"
-                }
-            ]
-        },
-        "@taqueria/plugin-ligo.compile.1667025567018": {
-            "task": "compile",
-            "plugin": "@taqueria/plugin-ligo",
-            "time": 1667025567019,
-            "output": [
-                {
-                    "contract": "Campaign.mligo",
-                    "artifact": "artifacts/Campaign.tz"
-                },
-                {
-                    "contract": "Campaign.storages.mligo",
-                    "artifact": "artifacts/Campaign.default_storage.tz\n"
-                },
-                {
-                    "contract": "Campaign.parameters.mligo",
-                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redeem_brain_discord.tz\nartifacts/Campaign.parameter.redeem_brain_discord.tz\n"
-                }
-            ]
-        },
         "@taqueria/plugin-flextesa.list accounts.1667026366469": {
             "task": "list accounts",
             "plugin": "@taqueria/plugin-flextesa",
@@ -225,10 +161,23 @@
                 }
             ]
         },
-        "@taqueria/plugin-ligo.compile.1667027328438": {
+        "@taqueria/plugin-taquito.deploy.1667107603292": {
+            "task": "deploy",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667107603292,
+            "output": [
+                {
+                    "contract": "Campaign.tz",
+                    "address": "KT1V6JBTGS7rcLzL4tmwJNKQcnAR1osgkFs6",
+                    "alias": "Campaign",
+                    "destination": "local"
+                }
+            ]
+        },
+        "@taqueria/plugin-ligo.compile.1667118247729": {
             "task": "compile",
             "plugin": "@taqueria/plugin-ligo",
-            "time": 1667027328438,
+            "time": 1667118247729,
             "output": [
                 {
                     "contract": "Campaign.mligo",
@@ -240,27 +189,14 @@
                 },
                 {
                     "contract": "Campaign.parameters.mligo",
-                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redeem_brain_discord.tz\nartifacts/Campaign.parameter.redeem_brain_discord.tz\n"
+                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redeem_brain_discord.tz\nartifacts/Campaign.parameter.redeem_brain_discord.tz\nartifacts/Campaign.parameter.update_brain_integrations.tz\nartifacts/Campaign.parameter.update_cupcake_integrations.tz\nartifacts/Campaign.parameter.update_brain_deadline.tz\n"
                 }
             ]
         },
-        "@taqueria/plugin-taquito.deploy.1667027334166": {
-            "task": "deploy",
-            "plugin": "@taqueria/plugin-taquito",
-            "time": 1667027334166,
-            "output": [
-                {
-                    "contract": "Campaign.tz",
-                    "address": "KT1BeAfqwXpXcVnq1G5GYFckkxdYUBw5Rb8i",
-                    "alias": "Campaign",
-                    "destination": "local"
-                }
-            ]
-        },
-        "@taqueria/plugin-ligo.compile.1667027530001": {
+        "@taqueria/plugin-ligo.compile.1667118305651": {
             "task": "compile",
             "plugin": "@taqueria/plugin-ligo",
-            "time": 1667027530001,
+            "time": 1667118305651,
             "output": [
                 {
                     "contract": "Campaign.mligo",
@@ -272,27 +208,51 @@
                 },
                 {
                     "contract": "Campaign.parameters.mligo",
-                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redeem_brain_discord.tz\nartifacts/Campaign.parameter.redeem_brain_discord.tz\n"
+                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redeem_brain_discord.tz\nartifacts/Campaign.parameter.redeem_brain_discord.tz\nartifacts/Campaign.parameter.update_brain_integrations.tz\nartifacts/Campaign.parameter.update_cupcake_integrations.tz\nartifacts/Campaign.parameter.update_brain_deadline.tz\n"
                 }
             ]
         },
-        "@taqueria/plugin-taquito.deploy.1667027534209": {
+        "@taqueria/plugin-taquito.deploy.1667118309742": {
             "task": "deploy",
             "plugin": "@taqueria/plugin-taquito",
-            "time": 1667027534209,
+            "time": 1667118309742,
             "output": [
                 {
                     "contract": "Campaign.tz",
-                    "address": "KT1L9pRvDRdHQyzkKhAhtgVbt7Q8cDuGdQpA",
+                    "address": "KT1JtQW9fxiFqSfzHubgLUxjaGBX6VA2sShy",
                     "alias": "Campaign",
                     "destination": "local"
                 }
             ]
         },
-        "@taqueria/plugin-ligo.compile.1667027878749": {
+        "@taqueria/plugin-ligo.compile.1667118455644": {
             "task": "compile",
             "plugin": "@taqueria/plugin-ligo",
-            "time": 1667027878749,
+            "time": 1667118455644,
+            "output": [
+                {
+                    "contract": "Campaign.mligo",
+                    "artifact": "Not compiled"
+                }
+            ]
+        },
+        "@taqueria/plugin-taquito.deploy.1667118459463": {
+            "task": "deploy",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667118459463,
+            "output": [
+                {
+                    "contract": "Campaign.tz",
+                    "address": "KT1SHY4uiRVHMaLbHDerVsDAuDy31PxkV9r7",
+                    "alias": "Campaign",
+                    "destination": "local"
+                }
+            ]
+        },
+        "@taqueria/plugin-ligo.compile.1667118507621": {
+            "task": "compile",
+            "plugin": "@taqueria/plugin-ligo",
+            "time": 1667118507621,
             "output": [
                 {
                     "contract": "Campaign.mligo",
@@ -304,76 +264,93 @@
                 },
                 {
                     "contract": "Campaign.parameters.mligo",
-                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redeem_brain_discord.tz\nartifacts/Campaign.parameter.redeem_brain_discord.tz\n"
+                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redeem_brain_discord.tz\nartifacts/Campaign.parameter.redeem_brain_discord.tz\nartifacts/Campaign.parameter.update_brain_integrations.tz\nartifacts/Campaign.parameter.update_cupcake_integrations.tz\nartifacts/Campaign.parameter.update_brain_deadline.tz\n"
                 }
             ]
         },
-        "@taqueria/plugin-taquito.deploy.1667027884682": {
+        "@taqueria/plugin-taquito.deploy.1667118513513": {
             "task": "deploy",
             "plugin": "@taqueria/plugin-taquito",
-            "time": 1667027884682,
+            "time": 1667118513513,
             "output": [
                 {
                     "contract": "Campaign.tz",
-                    "address": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP",
+                    "address": "KT1Tgj85VbzFenAFVyJhnr1B7TkmHZn7Z8cz",
                     "alias": "Campaign",
                     "destination": "local"
                 }
             ]
         },
-        "@taqueria/plugin-taquito.transfer.1667027893152": {
+        "@taqueria/plugin-ligo.compile.1667118619963": {
+            "task": "compile",
+            "plugin": "@taqueria/plugin-ligo",
+            "time": 1667118619963,
+            "output": [
+                {
+                    "contract": "Campaign.mligo",
+                    "artifact": "artifacts/Campaign.tz"
+                },
+                {
+                    "contract": "Campaign.storages.mligo",
+                    "artifact": "artifacts/Campaign.default_storage.tz\n"
+                },
+                {
+                    "contract": "Campaign.parameters.mligo",
+                    "artifact": "artifacts/Campaign.parameter.trasfer_100_to_alice.tz\nartifacts/Campaign.parameter.add_integration_discord.tz\nartifacts/Campaign.parameter.add_integration_telegram.tz\nartifacts/Campaign.parameter.add_integration_twitter.tz\nartifacts/Campaign.parameter.add_campaign_brain_food.tz\nartifacts/Campaign.parameter.add_campaign_cupcake.tz\nartifacts/Campaign.parameter.approve_redeem_brain_discord.tz\nartifacts/Campaign.parameter.redeem_brain_discord.tz\nartifacts/Campaign.parameter.update_brain_integrations.tz\nartifacts/Campaign.parameter.update_cupcake_integrations.tz\nartifacts/Campaign.parameter.update_brain_deadline.tz\n"
+                }
+            ]
+        },
+        "@taqueria/plugin-taquito.deploy.1667118624081": {
+            "task": "deploy",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667118624081,
+            "output": [
+                {
+                    "contract": "Campaign.tz",
+                    "address": "KT1JYkCQqySfhWcJByzLLXpGTYBPEreFUZTV",
+                    "alias": "Campaign",
+                    "destination": "local"
+                }
+            ]
+        },
+        "@taqueria/plugin-taquito.transfer.1667118644518": {
             "task": "transfer",
             "plugin": "@taqueria/plugin-taquito",
-            "time": 1667027893152,
+            "time": 1667118644518,
             "output": [
                 {
                     "contractAlias": "Campaign",
-                    "contractAddress": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP",
+                    "contractAddress": "KT1JYkCQqySfhWcJByzLLXpGTYBPEreFUZTV",
                     "tezTransfer": "0",
-                    "parameter": "(Left (Left (Left (Right (Pair \"TELEGRAM_JOIN_GROUP\" (Pair True \"Join Telegram Group\") \"telegram\")))))\n\n",
+                    "parameter": "(Left (Left (Left (Left (Pair (Pair (Pair \"Brain_Food\" \"1970-01-16T00:00:59Z\") { Elt \"DISCORD_JOIN_CHANNEL\" 100 } \"\")\n                              \"Brain Food\")))))\n\n",
                     "entrypoint": "default",
                     "destination": "http://localhost:20000"
                 }
             ]
         },
-        "@taqueria/plugin-taquito.transfer.1667027899023": {
+        "@taqueria/plugin-taquito.transfer.1667118649991": {
             "task": "transfer",
             "plugin": "@taqueria/plugin-taquito",
-            "time": 1667027899023,
+            "time": 1667118649991,
             "output": [
                 {
                     "contractAlias": "Campaign",
-                    "contractAddress": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP",
+                    "contractAddress": "KT1JYkCQqySfhWcJByzLLXpGTYBPEreFUZTV",
                     "tezTransfer": "0",
-                    "parameter": "(Left (Left (Left (Left (Pair \"Brain_Food\"\n                              (Pair \"1970-01-16T00:00:59Z\" { Elt \"DISCORD_JOIN_CHANNEL\" 100 })\n                              \"\"\n                              \"Brain Food\")))))\n\n",
+                    "parameter": "(Left (Left (Left (Left (Pair (Pair (Pair \"CUPCAKE_IPSUM\" \"1970-01-16T00:00:59Z\")\n                                    { Elt \"DISCORD_JOIN_CHANNEL\" 100 ; Elt \"TWITTER_FOLLOW\" 30 }\n                                    \"\")\n                              \"Cupcake Ipsum\")))))\n\n",
                     "entrypoint": "default",
                     "destination": "http://localhost:20000"
                 }
             ]
         },
-        "@taqueria/plugin-taquito.transfer.1667027904690": {
+        "@taqueria/plugin-taquito.transfer.1667118653786": {
             "task": "transfer",
             "plugin": "@taqueria/plugin-taquito",
-            "time": 1667027904690,
+            "time": 1667118653786,
             "output": [
                 {
                     "contractAlias": "Campaign",
-                    "contractAddress": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP",
-                    "tezTransfer": "0",
-                    "parameter": "(Left (Left (Left (Left (Pair \"CUPCAKE_IPSUM\"\n                              (Pair \"1970-01-16T00:00:59Z\"\n                                    { Elt \"DISCORD_JOIN_CHANNEL\" 100 ; Elt \"TWITTER_FOLLOW\" 30 })\n                              \"\"\n                              \"Cupcake Ipsum\")))))\n\n",
-                    "entrypoint": "default",
-                    "destination": "http://localhost:20000"
-                }
-            ]
-        },
-        "@taqueria/plugin-taquito.transfer.1667027908639": {
-            "task": "transfer",
-            "plugin": "@taqueria/plugin-taquito",
-            "time": 1667027908639,
-            "output": [
-                {
-                    "contractAlias": "Campaign",
-                    "contractAddress": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP",
+                    "contractAddress": "KT1JYkCQqySfhWcJByzLLXpGTYBPEreFUZTV",
                     "tezTransfer": "0",
                     "parameter": "(Left (Left (Right\n               (Right\n                  (Pair (Pair (Pair \"Brain_Food\" 100) \"DISCORD_JOIN_CHANNEL\" \"0X000000000000000000000000000000\")\n                        \"tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb\")))))\n\n",
                     "entrypoint": "default",
@@ -381,16 +358,31 @@
                 }
             ]
         },
-        "@taqueria/plugin-taquito.transfer.1667027994144": {
+        "@taqueria/plugin-taquito.transfer.1667118659218": {
             "task": "transfer",
             "plugin": "@taqueria/plugin-taquito",
-            "time": 1667027994144,
+            "time": 1667118659218,
             "output": [
                 {
                     "contractAlias": "Campaign",
-                    "contractAddress": "KT1UkjmdD32wdTbEPssRiFUQ2Btch1tPTBCP",
+                    "contractAddress": "KT1JYkCQqySfhWcJByzLLXpGTYBPEreFUZTV",
                     "tezTransfer": "0",
-                    "parameter": "(Left (Right (Right (Right (Pair \"Brain_Food\" \"DISCORD_JOIN_CHANNEL\")))))\n\n",
+                    "parameter": "(Right\n   (Right\n      (Pair \"Brain_Food\"\n            { Elt \"DISCORD_JOIN_CHANNEL\" 100 ; Elt \"TELEGRAM_JOIN_GROUP\" 80 })))\n\n",
+                    "entrypoint": "default",
+                    "destination": "http://localhost:20000"
+                }
+            ]
+        },
+        "@taqueria/plugin-taquito.transfer.1667118664676": {
+            "task": "transfer",
+            "plugin": "@taqueria/plugin-taquito",
+            "time": 1667118664676,
+            "output": [
+                {
+                    "contractAlias": "Campaign",
+                    "contractAddress": "KT1JYkCQqySfhWcJByzLLXpGTYBPEreFUZTV",
+                    "tezTransfer": "0",
+                    "parameter": "(Right (Right (Pair \"CUPCAKE_IPSUM\" { Elt \"DISCORD_JOIN_CHANNEL\" 100 })))\n\n",
                     "entrypoint": "default",
                     "destination": "http://localhost:20000"
                 }
