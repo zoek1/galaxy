@@ -1,6 +1,21 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 
+const Options = [
+  {
+    id: 1,
+    option: "One",
+  },
+  {
+    id: 2,
+    option: "Two",
+  },
+  {
+    id: 1,
+    option: "Three",
+  }
+]
+
 function SelectPage () {
   return(
     <div>
@@ -10,12 +25,16 @@ function SelectPage () {
           <div className="title">
             <h5>Select option</h5>
           </div>
-          <select class="form-select" aria-label="Default select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
+          {
+            Options.map(op =>(
+              <div class="form-check ">
+                <input class="form-check-input" type="checkbox" value="" id={op.id}/>
+                <label class="form-check-label" for="flexCheckDefault">
+                  {op.option}
+                </label>
+              </div>
+            ))
+          }
 
         </div>
         <div className="buttonSend d-flex justify-content-end">
