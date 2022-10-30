@@ -27,6 +27,12 @@ const Fields = [
     name: 'What do you thing?',
     image: 'bi bi-question',
     integration_action: 'ask_question',
+  },
+  {
+    id: 5,
+    name: 'Select option',
+    image: 'bi bi-question',
+    integration_action: 'select_option',
   }
 ]
 
@@ -38,12 +44,16 @@ function ViewCampaignPage (){
         {
           Fields.map(field =>(
             <div key={field.id}>
-            { field.integration_action === 'ask_question' ?
+            { (field.integration_action === 'ask_question') &&
               <Link to={'/think'}>
                 <IntegrationButton id={field.id} name={field.name} imageIcon={field.image}/>
-              </Link>
-              : <IntegrationButton id={field.id} name={field.name} imageIcon={field.image}/>
-            } 
+              </Link> ||
+              (field.integration_action === 'select_option' &&
+              <Link to={'/select'}>
+                <IntegrationButton id={field.id} name={field.name} imageIcon={field.image}/>
+              </Link>)
+              || <IntegrationButton id={field.id} name={field.name} imageIcon={field.image}/>
+            }
 
             </div>
           ))

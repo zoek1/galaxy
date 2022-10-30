@@ -11,6 +11,7 @@ import IndexPage from './pages/IndexPage';
 import NewCampaignPage from './pages/NewCampaignPage';
 import ViewCampaignPage from './pages/ViewCampaignPage';
 import ThinkPage from './pages/ThinkPage';
+import SelectPage from './pages/SelectPage';
 
 export default function App() {
   const [address, setAddress] = useState('');
@@ -52,6 +53,10 @@ export default function App() {
     {
       path:"/think",
       element: <ThinkPage/>
+    },
+    {
+      path:"/select",
+      element: <SelectPage/>
     }
   ]);
 
