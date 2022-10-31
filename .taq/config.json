@@ -1,0 +1,100 @@
+{
+    "language": "en",
+    "contractsDir": "contracts",
+    "artifactsDir": "artifacts",
+    "contracts": {
+        "LoyalToken.mligo": {
+            "sourceFile": "LoyalToken.mligo",
+            "hash": "5bd83e99913ddac977a2b3ee66252a1646d8eee0db133a344aac7207b8c834b7"
+        }
+    },
+    "network": {
+        "ghostnet": {
+            "label": "ghostnet",
+            "rpcUrl": "https://ghostnet.ecadinfra.com",
+            "protocol": "PtKathmankSpLLDALzWw7CGD2j2MtyveTwboEYokqUCP4a1LxMg"
+        }
+    },
+    "sandbox": {
+        "local": {
+            "label": "Local Tezos Sandbox",
+            "rpcUrl": "http://localhost:20000",
+            "protocol": "PtKathmankSpLLDALzWw7CGD2j2MtyveTwboEYokqUCP4a1LxMg",
+            "accounts": {
+                "default": "alice",
+                "bob": {
+                    "encryptedKey": "edpkurPsQ8eUApnLUJ9ZPDvu98E8VNj4KtJa1aZr16Cr5ow5VHKnz4",
+                    "publicKeyHash": "tz1aSkwEot3L2kmUvcoxzjMomb9mvBNuzFK6",
+                    "secretKey": "unencrypted:edsk3RFfvaFaxbHx8BMtEW1rKQcPtDML3LXjNqMNLCzC3wLC1bWbAt"
+                },
+                "alice": {
+                    "encryptedKey": "edpkvGfYw3LyB1UcCahKQk4rF2tvbMUk8GFiTuMjL75uGXrpvKXhjn",
+                    "publicKeyHash": "tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb",
+                    "secretKey": "unencrypted:edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq"
+                },
+                "john": {
+                    "encryptedKey": "edpktt6t2ENhxiQqun6bXPPWC6tFVvNPTDRh1gEPGX4BgDgbDnmGzP",
+                    "publicKeyHash": "tz1Zwoh1QCVAvJ4sVTojMp9pLYp6Ji4NoZy6",
+                    "secretKey": "unencrypted:edsk3Un2KRUUoWZufi914HQem96ejVFnkyD8GXRPUSkgqy5etsYXEN"
+                },
+                "jane": {
+                    "encryptedKey": "edpkvS6TDSWcqqj3EJi3NRrCMyN7oNw1B3Hp37R19tMThqM8YNhAuS",
+                    "publicKeyHash": "tz1aHUAC4oviwJuZF1EvVSvFz7cu9KMNYBph",
+                    "secretKey": "unencrypted:edsk3UkdS1UBfTBkMAoFxmfdmUHmCdNhTzDJ1cSJuZhU1b6k6fZZoQ"
+                },
+                "joe": {
+                    "encryptedKey": "edpkuT1QYPYbLLQz9dXhQS33ncsixxeGHbNGmntPTR4VBbWmskHPrV",
+                    "publicKeyHash": "tz1MVGjgD1YtAPwohsSfk8i3ZiT1yEGM2YXB",
+                    "secretKey": "unencrypted:edsk3Un2FU9Zeb4KEoATWdpAqcX5JArMUj2ew8S4SuzhPRDmGoqNx2"
+                }
+            }
+        }
+    },
+    "environment": {
+        "default": "development",
+        "development": {
+            "networks": [],
+            "sandboxes": [
+                "local"
+            ],
+            "aliases": {
+                "LoyalToken": {
+                    "address": "KT1Up1zpSD3HhgwGCtsQav9JG45ffAShdGAR"
+                },
+                "Campaign": {
+                    "address": "KT1JYkCQqySfhWcJByzLLXpGTYBPEreFUZTV"
+                }
+            }
+        },
+        "testing": {
+            "networks": [
+                "ghostnet"
+            ],
+            "sandboxes": []
+        }
+    },
+    "accounts": {
+        "bob": "3_000_000_000",
+        "alice": "3_000_000_000",
+        "john": "3_000_000_000",
+        "jane": "3_000_000_000",
+        "joe": "3_000_000_000"
+    },
+    "plugins": [
+        {
+            "name": "@taqueria/plugin-ligo",
+            "type": "npm"
+        },
+        {
+            "name": "@taqueria/plugin-flextesa",
+            "type": "npm"
+        },
+        {
+            "name": "@taqueria/plugin-taquito",
+            "type": "npm"
+        }
+    ],
+    "projectDir": "/home/ma/code/bounties/loyalty-dapp",
+    "configFile": "/home/ma/code/bounties/loyalty-dapp/.taq/config.json",
+    "hash": "39145c2d0791c8a05d181e502ea8e91bc2acc330ef018796a1f485fbb02a9969"
+}
