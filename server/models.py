@@ -1,9 +1,23 @@
 import mongoengine as me
 from mongoengine import CASCADE
 
+TEXT_PLUGIN_NAMES = {
+    'ASK_QUESTION_1': {},
+    'ASK_QUESTION_2': {},
+    'ASK_QUESTION_3': {},
+    'ASK_QUESTION_4': {},
+    'ASK_QUESTION_5': {},
+    'CHOOSE_OPTION_1': {},
+    'CHOOSE_OPTION_2': {},
+    'CHOOSE_OPTION_3': {},
+    'CHOOSE_OPTION_4': {},
+    'CHOOSE_OPTION_5': {},
+}
+
 PLUGINS_NAMES = {
     'DISCORD_JOIN_CHANNEL': {},
-    'TWITTER_FOLLOW': {}
+    'TWITTER_FOLLOW': {},
+    **TEXT_PLUGIN_NAMES
 }
 
 class DiscordIntegration(me.EmbeddedDocument):

@@ -14,7 +14,7 @@ from pytezos import pytezos
 import toml
 import requests
 
-from models import User, Integration, DiscordIntegration, TwitterIntegration
+from models import User, Integration, DiscordIntegration, TwitterIntegration, TEXT_PLUGIN_NAMES
 
 # os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true"
 
@@ -41,7 +41,7 @@ app.config.update(dict(
 def get_campaign(campaign_id):
     campaign_contract = pytezos.using('ghostnet').contract(app.config['CONTRACT'])
     campaign_storage = campaign_contract.storage['campaigns']
-    return campaign_storage['TEST_CAMPAIGN']()
+    return campaign_storage[campaign_id]()
 
 
 def approve_campaign_integration(address, campaign_id, integration_id):
@@ -51,6 +51,77 @@ def approve_campaign_integration(address, campaign_id, integration_id):
                                            integration=integration_id,
                                            proof="",
                                            spender=address).send()
+
+
+@app.route("/check_question_reward/<string:campaign_id>/<string:integration_type>")
+def check_question_reward(campaign_id, integration_type):
+    try:
+        campaign_tz = get_campaign(campaign_id)
+    except:
+        return {
+            'status': 404,
+            'msg': 'Campaign Doesn\'t exists'
+        }, 404
+
+    cid = campaign_tz['metadata_url'].split('ipfs://')[1]
+    print(campaign_tz)
+    if integration_type not in TEXT_PLUGIN_NAMES.keys() or integration_type not in campaign_tz['integrations'].keys():
+        return {
+                   'status': 400,
+                   'msg': 'This method only support question and selection integrations'
+               }, 400
+
+    if request.args.get('address'):
+        session['address'] = request.args.get('address')
+        address = request.args.get('address')
+    else:
+        address = session['address']
+
+    user = User.objects(address=address).first()
+    if not user:
+        user = User(address=address, uuid=str(uuid.uuid4()), email="")
+        user.save()
+
+    integration = Integration.objects(user=user, campaign_id=campaign_id, integration=integration_type).first()
+    if integration:
+        # Check if reward was approved
+        if integration.approved:
+            return {
+                       'status': 203,
+                       'msg': 'Reward is approved, ready to claim!'
+                   }, 203
+        elif integration.redeem:
+            return {
+                       'status': 203,
+                       'msg': 'Reward already claimed!'
+                   }, 203
+    else:
+        integration = Integration(
+            uuid=str(uuid.uuid4()),
+            user=user,
+            integration=integration_type,
+            campaign_id=campaign_id,
+            cid=cid)
+
+    response = request.args.get('response', '')
+    if response.strip() == '':
+        return {
+           'status': 400,
+           'msg': 'No response provided'
+        }, 400
+
+    integration.data = {
+        'response': response
+    }
+    approve_campaign_integration(user.address, campaign_id, integration_type)
+    integration.approved = True
+
+    integration.save()
+    # Update db
+    return {
+        'status': 200,
+        'msg': 'User asked the question, approving rewards!'
+    }
 
 
 @app.route("/check_twitter_reward/<string:campaign_id>/<string:integration_type>")
