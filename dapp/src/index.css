@@ -1,0 +1,80 @@
+:root {
+  --color-title: #1a1a1a;
+  --button-primary: #1e90ff;
+  --button-text: #ffffff;
+  --border-form: #a6a6a6;
+}
+
+#root{
+  height: 100vh;
+}
+
+.IndexPage h1{
+  font-size: 3rem;
+}
+
+.title {
+    margin: 1em 5em;
+    color: var(--color-title);
+}
+
+.content-button{
+    margin: 1em 5em;
+}
+
+.content-button .btn{
+  margin: 1em;
+  background-color: var(--button-primary);
+  color: var(--button-text);
+  width: 200px;
+}
+
+form div{
+  margin: 1em;
+}
+
+form label{
+  margin: 0 1em;
+}
+
+.disc{
+  margin: 2em;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border-form);
+  border-radius: 10px;
+}
+
+.view{
+  padding: 2em;
+}
+
+.contentButton{
+  margin: 0 2em 1em 2em;
+  padding: 0!important;
+}
+
+.contentButton div i{
+  padding: 0.8em 1em;
+}
+
+.contentButton a{
+  text-decoration: none;
+  width: 25em;
+}
+
+.thinkPage .textareaContent{
+  width: 70%;
+}
+
+.thinkPage textarea{
+  height: 100px!important;
+}
+
+.buttonSend button{
+  margin: 2em 10em;
+}
+
+.form-select{
+  width: 70%!important;
+}
