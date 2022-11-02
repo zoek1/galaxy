@@ -12,7 +12,14 @@
         "ghostnet": {
             "label": "ghostnet",
             "rpcUrl": "https://ghostnet.ecadinfra.com",
-            "protocol": "PtKathmankSpLLDALzWw7CGD2j2MtyveTwboEYokqUCP4a1LxMg"
+            "protocol": "PtKathmankSpLLDALzWw7CGD2j2MtyveTwboEYokqUCP4a1LxMg",
+            "accounts": {
+                "taqRootAccount": {
+                    "publicKey": "p2pk66tYBJHMPZ2pwG4uJjB8L3ZUfTTodUyFyo9wNQn4xpJB8GfCb52",
+                    "publicKeyHash": "tz3MVYmVZ5jsxEThib6NhtrQMG4YxsbVGUnP",
+                    "privateKey": "p2sk2YRYGDAfpP5Yr9LwiA8UhnF9sfScBa5zrMFV1nKzquUUq1GPB9"
+                }
+            }
         }
     },
     "sandbox": {
@@ -70,7 +77,12 @@
             "networks": [
                 "ghostnet"
             ],
-            "sandboxes": []
+            "sandboxes": [],
+            "aliases": {
+                "Campaign": {
+                    "address": "KT1WWwuMW19d7d1cTwMthiWHiEbDJK1DVvZg"
+                }
+            }
         }
     },
     "accounts": {
@@ -96,5 +108,5 @@
     ],
     "projectDir": "/home/ma/code/bounties/loyalty-dapp",
     "configFile": "/home/ma/code/bounties/loyalty-dapp/.taq/config.json",
-    "hash": "39145c2d0791c8a05d181e502ea8e91bc2acc330ef018796a1f485fbb02a9969"
+    "hash": "42f23a77657065d4048d6ab329e75868aa1744159b60276180a776ea51936a3b"
 }

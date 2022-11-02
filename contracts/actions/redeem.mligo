@@ -17,6 +17,7 @@ let _approve (p,s : (approve * storage)): operation list * storage =
       ([] : operation list), {s with allowances = new_allowances}
 
 let approveRedeem (p,s: redemption * storage): operation list * storage =
+  let _: unit = assert_with_error (Tezos.get_sender() = s.admin) "Only admin approve redeems." in
   match Big_map.find_opt p.campaign s.campaigns with
     None -> (failwith "Campaign Doesn't Exists")
   | Some campaign -> 
