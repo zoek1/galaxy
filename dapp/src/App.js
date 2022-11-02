@@ -79,19 +79,19 @@ export default function App() {
       element: <ViewCampaignPage address={address} ready={initReady}/>,
       children: [
           {
-            path:"new",
-            element: <NewCampaignPage address={address} ready={initReady}/>
-          },
-          {
             path:"think",
             element: <ThinkPage address={address} ready={initReady}/>
           },
+          {
+            path:"select",
+            element: <SelectPage address={address} ready={initReady}/>
+          }
       ]
     },
     {
-      path:"/select",
-      element: <SelectPage address={address} ready={initReady}/>
-    }
+      path:"/new",
+      element: <NewCampaignPage address={address} ready={initReady}/>
+    },
   ]);
 
   return (<Context.Provider  value={{

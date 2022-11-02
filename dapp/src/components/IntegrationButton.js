@@ -14,7 +14,7 @@ function IntegrationButton ({id, name, imageIcon, rewarded, onClick, reward}){
             {name}
               {
                   rewarded ? <i className="bi bi-check-square justify-content-end"></i> :
-                    <div className="btn btn-success">+ {reward.toString()}</div>
+                    <div className="btn btn-success">{reward ? "+" +reward.toString() : 0}</div>
               }
 
           </div>

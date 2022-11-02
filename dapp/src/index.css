@@ -1,6 +1,7 @@
 :root {
-  --color-title: #1a1a1a;
-  --button-primary: #1e90ff;
+  --button-primary: #34495e;
+  --hover-button-primary: #aacfd0;
+  --active-button-primary:#ffffff;
   --button-text: #ffffff;
   --border-form: #a6a6a6;
 }
@@ -9,13 +10,40 @@
   height: 100vh;
 }
 
-.IndexPage h1{
-  font-size: 3rem;
+.IndexPage .btn1{
+  padding: 1em;
+  background-color: var(--button-primary);
+  border-color: var(--button-primary);
 }
 
-.title {
-    margin: 1em 5em;
-    color: var(--color-title);
+.IndexPage .btn1:hover{
+  background-color: var(--hover-button-primary);
+  border-color: var(--hover-button-primary);
+}
+
+.IndexPage .btn1:first-child:active{
+  background-color: var(--active-button-primary);
+  border-color: var(--active-button-primary);
+}
+
+.IndexPage .btn2{
+  padding: 1em;
+  background-color: var(--button-primary);
+  border-color: var(--button-primary);
+}
+
+.IndexPage .btn2:hover{
+  background-color: var(--hover-button-primary);
+  border-color: var(--hover-button-primary);
+}
+
+.IndexPage .btn2:first-child:active{
+  background-color: var(--active-button-primary);
+  border-color: var(--active-button-primary);
+}
+
+div .address p{
+  margin: 0!important;
 }
 
 .content-button{
@@ -25,6 +53,7 @@
 .content-button .btn{
   margin: 1em;
   background-color: var(--button-primary);
+    border-color: var(--button-primary);
   color: var(--button-text);
   width: 200px;
 }

@@ -8,7 +8,7 @@ function Navbar(props){
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
         <a className="navbar-brand" href="#">
-          <img src="#" width="30" height="30" alt=""/>
+          <img src="/galaxy192.png" width="80" height="30" alt="galaxy"/>
         </a>
         <div className="d-flex justify-content-end align-items-baseline" id="navbarTogglerDemo01">
          <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -21,11 +21,11 @@ function Navbar(props){
            <li className="nav-item">
              {
                !address ? <a className='nav-link ' href="#" onClick={onLogin}>Log In</a> :
-                  <div>
+                  <div className="log d-flex align-items-baseline">
                     <a className="nav-link bi bi-person-fill" href="#"></a>
-                    <div>
+                    <div className="address">
                       <p>{address}</p>
-                      <a className='nav-link' onClick={onLogout}>Log Out</a>
+                      <a className='nav-link d-flex justify-content-end' onClick={onLogout}>Log Out</a>
                     </div>
                   </div>
              }
