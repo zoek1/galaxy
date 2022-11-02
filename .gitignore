@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 artifacts/
 config.toml
+
+# node
+node_modules
