@@ -1,6 +1,9 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import Context from "../context";
 
-function Navbar(){
+function Navbar(props){
+  const {address, onLogin, onLogout } = useContext(Context);
+
   return(
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
@@ -16,7 +19,17 @@ function Navbar(){
              <a className="nav-link" href="#">Rewards</a>
            </li>
            <li className="nav-item">
-             <a className="nav-link bi bi-person-fill" href="#"></a>
+             {
+               !address ? <a className='nav-link ' href="#" onClick={onLogin}>Log In</a> :
+                  <div>
+                    <a className="nav-link bi bi-person-fill" href="#"></a>
+                    <div>
+                      <p>{address}</p>
+                      <a className='nav-link' onClick={onLogout}>Log Out</a>
+                    </div>
+                  </div>
+             }
+
            </li>
          </ul>
         </div>

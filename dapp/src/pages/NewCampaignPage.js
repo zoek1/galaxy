@@ -1,10 +1,12 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 
-function NewCampaignPage (){
+function NewCampaignPage (props){
+  let {address, onLogin, onLogout} = props;
+
   return(
     <div>
-      <Navbar/>
+      <Navbar address={address} onLogin={onLogin} onLogout={onLogout}/>
       <div className="container">
         <form className="d-flex row">
 

@@ -58,7 +58,7 @@ form label{
   padding: 0.8em 1em;
 }
 
-.contentButton a{
+.contentButton .btn-content {
   text-decoration: none;
   width: 25em;
 }
