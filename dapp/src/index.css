@@ -80,7 +80,12 @@ form label{
 
 .contentButton{
   margin: 0 2em 1em 2em;
-  padding: 0!important;
+  width: 35em;
+}
+
+.sync {
+  width: 8em;
+  max-width: 8em;
 }
 
 .contentButton div i{
@@ -89,7 +94,7 @@ form label{
 
 .contentButton .btn-content {
   text-decoration: none;
-  width: 25em;
+
 }
 
 .thinkPage .textareaContent{

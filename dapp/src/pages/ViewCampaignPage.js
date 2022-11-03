@@ -2,100 +2,162 @@ import React, {useContext, useEffect, useState} from 'react'
 import Navbar from '../components/Navbar'
 import IntegrationButton from '../components/IntegrationButton'
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {get_campaign, get_campaigns} from "../utils/contract";
-import Context from "../context";
-import context from "../context";
+import {get_campaign, get_campaigns, redeem} from "../utils/contract";
+import Context from "../context.js";
+import config from "../config.js";
 import BigNumber from "bignumber.js";
 import {getCidFrom, getJSONData} from "../utils/ipfs";
+import {jsonGet, jsonPost} from "../utils/request";
 
-const Fields = [
-  {
-    id: 1,
-    name: 'Discord',
-    image: 'bi bi-discord',
-    integration_action: 'link_account',
-  },
-  {
-    id: 2,
-    name: 'Join Telegram',
-    image: 'bi bi-telegram',
-    integration_action: 'link_account',
-  },
-  {
-    id: 3,
-    name: 'Suscribe Newsletter',
-    image: 'bi bi-newspaper',
-    integration_action: 'link_account',
-  },
-  {
-    id: 4,
-    name: 'What do you thing?',
-    image: 'bi bi-question',
-    integration_action: 'ask_question',
-  },
-  {
-    id: 5,
-    name: 'Select option',
-    image: 'bi bi-question',
-    integration_action: 'select_option',
-  }
-]
 
 function ViewCampaignPage (props){
   const {ready, address} = props;
-  console.log(props)
   const [campaign, setCampaign] = useState(null);
+  const [auths, setAuths] = useState({twitter: false, discord: false})
   const [campaignData, setCampaignData] = useState({})
   const [rewards, setRewards] = useState(0);
+  const [deactivate, setDeactivate] = useState({})
   const [integrations, setIntegrations] = useState([])
+  const [cache, setCache] = useState({});
   const context = useContext(Context)
-
   const navigate = useNavigate();
   let { campaignId } = useParams();
 
+  useEffect(() => {
+    const _ = async () => {
+      const res = await fetch('/s/authenticated')
+      const data = await res.json();
+
+      if (data.twitter !== auths.twitter || data.discord !== auths.discord) {
+        setAuths(data);
+      }
+    }
+    _();
+  }, [auths.twitter, auths.discord]);
+
+  const retrieveCampaign = async () => {
+
+      const campaign = await get_campaign(context.address, context.contract.current, campaignId);
+
+      if (campaign && campaign.activity) {
+        const arr = [...campaign.activity.valueMap].map(([key, value]) => !value.claimed ? value.earned : 0 )
+        setRewards(BigNumber.sum.apply(null, arr).toString());
+      }
+
+      const tuples = [...campaign.integrations.entries()]
+      const integrations = tuples.map((t) => ({
+        integrationId: t[0],
+        amount: t[1]
+      }))
+
+
+      setCampaign(campaign);
+      setIntegrations(integrations)
+      updateCacheFromServer();
+  };
+
+  const updateCacheFromServer = async () => {
+    const data = await jsonGet(`/s/cache/${campaignId}`, {
+      address
+    });
+    setCache(data)
+  }
 
   useEffect( () => {
-    if (ready && context.contract) {
-      get_campaign(context.address, context.contract, campaignId).then((campaign) => {
-        setCampaign(campaign);
-
-        if (campaign && campaign.activity) {
-          const arr = [...campaign.activity.valueMap].map(([key, value]) => !value.claimed ? value.earned : 0 )
-          setRewards(BigNumber.sum.apply(null, arr).toString());
-        }
-
-        const tuples = [...campaign.integrations.entries()]
-        const integrations = tuples.map((t) => ({
-          integrationId: t[0],
-          amount: t[1]
-        }))
-        setIntegrations(integrations)
-    });
+    if (ready && context.contract.current) {
+      retrieveCampaign();
     }
-  }, [context.contract, address]);
+  }, [context.contract.current, address]);
 
   useEffect(() => {
     if (!campaign) return;
 
-    // const cid = getCidFrom(campaign.metadata_url);
-    const cid = "Qmf6RBKw8XCMCfAjSFd126G7oLuwfAwiR7uTAPdhkiGqDE"
+    const cid = getCidFrom(campaign.metadata_url);
     getJSONData(cid).then(data => setCampaignData(data)).catch(e => console.log(e))
 
   }, [campaign])
-  console.log(campaignData)
-  console.log(campaign);
 
+  const onRedeem = (integrationId) => async (event) => {
+    setDeactivate({...deactivate, [integrationId]: true})
+    const response = await redeem( campaignId, integrationId, context.Tezos.current)
+    try {
+      await jsonPost(`/s/redeem/${campaignId}/${integrationId}`, {
+        tx: response['transactionHash'],
+        address,
+      });
+      updateCacheFromServer();
+    } catch(e) {
+      alert(e)
+    }
 
+    setDeactivate({...deactivate, [integrationId]: undefined})
+  }
+
+  const twitterOnClick = (integrationId) => () => {
+    const screen_name = campaignData.integrations[integrationId].screen_name.replace('@', '');
+    window.location.href = `https://twitter.com/${screen_name}`;
+  }
+
+  const twitterCheck = (integrationId) => async (event) => {
+    event.stopPropagation();
+
+    if (!auths.twitter) {
+       window.location.href = `${config.DOMAIN}/s/twitter/${campaignId}`
+    }
+
+    if (!address) {
+      await context.onLogin();
+    }
+
+    try {
+      const data = jsonPost(`/s/check_twitter_reward/${campaignId}/${integrationId}`, {
+        address
+      })
+      alert(data.msg);
+      await retrieveCampaign();
+    } catch (e) {
+      alert(e)
+    }
+  }
+
+  const discordCheck = (integrationId) => async (event) => {
+    event.stopPropagation();
+
+    if (!auths.discord) {
+       window.location.href = `${config.DOMAIN}/s/discord/${campaignId}`
+    }
+
+    if (!address) {
+      await context.onLogin();
+    }
+
+    try {
+      const data = jsonPost(`/s/check_discord_reward/${campaignId}/${integrationId}`, {
+        address
+      })
+      alert(data.msg);
+      await retrieveCampaign();
+    } catch (e) {
+      alert(e)
+    }
+  }
+
+  const isRewarded = (integrationId) => {
+    if (campaign.activity) {
+      const rewardOnProcess = cache.activity && cache.activity[integrationId]?.redeemed;
+      const rewardClaimed = campaign.activity.get(integrationId) &&
+                            campaign.activity.get(integrationId).claimed;
+
+      return rewardClaimed || rewardOnProcess;
+    }
+
+    return false;
+  }
 
   return(
     <div>
       <Navbar/>
       <h2 className="text-center mt-5">{ campaign && campaign.name ?  campaign.name : ''}</h2>
-      {  address !== '' ?
-        <button className="btn btn-outline-success">
-          Redeem ${rewards}  LYT
-        </button>
-      : <></> }
       <div className="view container d-flex flex-column align-items-center justify-content-center h-100">
         { integrations && campaignData.integrations ?
           integrations.map(field =>(
@@ -105,30 +167,44 @@ function ViewCampaignPage (props){
                                    name={campaignData.integrations[field.integrationId].question}
                                    imageIcon='bi bi-question'
                                    reward={field.amount}
-                                   rewarded={campaign.activity && campaign.activity.get(field.integrationId) !== undefined}
+                                   rewarded={isRewarded(field.integrationId)}
+                                   claim={campaign.activity && campaign.activity.get(field.integrationId) !== undefined }
+                                   onRedeem={onRedeem(field.integrationId)}
                                    onClick={ () => navigate(`/campaign/${campaignId}/think`) }
+                                   deactivated={deactivate[field.integrationId]}
                 /> ||
               (field.integrationId.match(/CHOOSE_OPTION/)) &&
                 <IntegrationButton id={field.integrationId}
                                    name={campaignData.integrations[field.integrationId].question}
                                    imageIcon='bi bi-question'
                                    reward={field.amount}
-                                   rewarded={campaign.activity && campaign.activity.get(field.integrationId) !== undefined}
+                                   rewarded={isRewarded(field.integrationId)}
+                                   claim={campaign.activity && campaign.activity.get(field.integrationId) !== undefined}
+                                   onRedeem={onRedeem(field.integrationId)}
                                    onClick={ () => navigate(`/campaign/${campaignId}/select`) }
+                                   deactivated={deactivate[field.integrationId]}
                 /> ||
               (field.integrationId.match(/DISCORD_JOIN_CHANNEL/)) &&
                 <IntegrationButton id={field.integrationId}
                                    name={"Join us on Discord"}
                                    imageIcon='bi bi-discord'
                                    reward={field.amount}
-                                   rewarded={campaign.activity && campaign.activity.get(field.integrationId) !== undefined}
+                                   rewarded={isRewarded(field.integrationId)}
+                                   claim={campaign.activity && campaign.activity.get(field.integrationId) !== undefined }
+                                   onRedeem={onRedeem(field.integrationId)}
+                                   deactivated={deactivate[field.integrationId]}
                 /> ||
               (field.integrationId.match(/TWITTER_FOLLOW/)) &&
                 <IntegrationButton id={field.integrationId}
                                    name={`Follow ${campaignData.integrations[field.integrationId].screen_name} on twitter `}
                                    imageIcon='bi bi-twitter'
                                    reward={field.amount}
-                                   rewarded={campaign.activity && campaign.activity.get(field.integrationId) !== undefined}
+                                   onRedeem={onRedeem(field.integrationId)}
+                                   rewarded={isRewarded(field.integrationId)}
+                                   claim={campaign.activity && campaign.activity.get(field.integrationId) !== undefined }
+                                   onClick={twitterOnClick(field.integrationId)}
+                                   onCheck={twitterCheck(field.integrationId)}
+                                   deactivated={deactivate[field.integrationId]}
                 />
               || <IntegrationButton id={field.integrationId} name={field.name} imageIcon={field.image}/>
             }

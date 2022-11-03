@@ -24,6 +24,71 @@ let add_integration_twitter : action = AddIntegration ("TWITTER_FOLLOW", {
   active = true
 })
 
+let add_integration_ask_1 : action = AddIntegration ("ASK_QUESTION_1", {
+  name = "Open question";
+  provider = "Loyal";
+  active = true
+})
+let add_integration_ask_2 : action = AddIntegration ("ASK_QUESTION_2", {
+  name = "Open question";
+  provider = "Loyal";
+  active = true
+})
+let add_integration_ask_3 : action = AddIntegration ("ASK_QUESTION_3", {
+  name = "Open question";
+  provider = "Loyal";
+  active = true
+})
+let add_integration_ask_4 : action = AddIntegration ("ASK_QUESTION_4", {
+  name = "Open question";
+  provider = "Loyal";
+  active = true
+})
+let add_integration_ask_5 : action = AddIntegration ("ASK_QUESTION_5", {
+  name = "Open question";
+  provider = "Loyal";
+  active = true
+})
+
+let add_integration_choose_1 : action = AddIntegration ("CHOOSE_OPTION_1", {
+  name = "Choose options";
+  provider = "Loyal";
+  active = true
+})
+let add_integration_choose_2 : action = AddIntegration ("CHOOSE_OPTION_2", {
+  name = "Choose options";
+  provider = "Loyal";
+  active = true
+})
+let add_integration_choose_3 : action = AddIntegration ("CHOOSE_OPTION_3", {
+  name = "Choose options";
+  provider = "Loyal";
+  active = true
+})
+let add_integration_choose_4 : action = AddIntegration ("CHOOSE_OPTION_4", {
+  name = "Choose options";
+  provider = "Loyal";
+  active = true
+})
+let add_integration_choose_5 : action = AddIntegration ("CHOOSE_OPTION_5", {
+  name = "Choose options";
+  provider = "Loyal";
+  active = true
+})
+
+let add_campaign_test: action = AddCampaign {
+  campaign_id = "TEST_CAMPAIGN_3";
+  name = "Test Campaign";
+  deadline = Tezos.get_now () + (86_400 * 15); (* In Fifteen Days *)
+  integrations = Map.literal [
+    ("DISCORD_JOIN_CHANNEL", 100n);
+    ("TWITTER_FOLLOW", 30n);
+    ("ASK_QUESTION_1", 15n);
+    ("CHOOSE_OPTION_1", 18n);
+  ];
+  metadata_url = "ipfs://QmbipEHWVN8Ah9FqNLocojr5EPQW2Duvfb4JSsz5b7f1zS"
+}
+
 let add_campaign_brain_food: action = AddCampaign {
   campaign_id = "Brain_Food";
   name = "Brain Food";

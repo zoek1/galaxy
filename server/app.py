@@ -13,8 +13,9 @@ from pytezos import pytezos
 
 import toml
 import requests
+from werkzeug.urls import url_parse
 
-from models import User, Integration, DiscordIntegration, TwitterIntegration, TEXT_PLUGIN_NAMES
+from models import User, Integration, DiscordIntegration, TwitterIntegration, TEXT_PLUGIN_NAMES, Campaign
 
 # os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true"
 
@@ -31,12 +32,8 @@ CORS(app)
 pytezos = pytezos.using(key=app.config['ACCOUNT'])
 discord = DiscordOAuth2Session(app)
 twitter_bp = make_twitter_blueprint()
-app.register_blueprint(twitter_bp, url_prefix='/t', redirect_to='check_twitter_reward')
+app.register_blueprint(twitter_bp, url_prefix='/s/t', redirect_to='redirect_to')
 
-
-app.config.update(dict(
-  PREFERRED_URL_SCHEME = 'https'
-))
 
 def get_campaign(campaign_id):
     campaign_contract = pytezos.using('ghostnet').contract(app.config['CONTRACT'])
@@ -53,7 +50,106 @@ def approve_campaign_integration(address, campaign_id, integration_id):
                                            spender=address).send()
 
 
-@app.route("/check_question_reward/<string:campaign_id>/<string:integration_type>")
+@app.route('/s/twitter/<string:campaign_id>')
+def twitter_login(campaign_id):
+    if not twitter.authorized:
+        session['redirect_to'] = campaign_id
+        return redirect(url_for("twitter.login"))
+
+    print(request.path)
+    return redirect(f'{app.config["PREFERRED_URL_SCHEME"]}://{app.config["DOMAIN"]}/campaign/{campaign_id}')
+
+
+@app.route('/s/redirect')
+def redirect_to():
+    path = session.pop('redirect_to')
+    print(path)
+
+    return redirect(f'{app.config["PREFERRED_URL_SCHEME"]}://{app.config["DOMAIN"]}/campaign/{path}')
+
+
+@app.route('/s/cache/<string:campaign_id>')
+def cache(campaign_id):
+    campaign = Campaign.objects(campaign_id=campaign_id).first()
+    if not campaign:
+        try:
+            tz_campaign = get_campaign(campaign_id)
+            campaign = Campaign(campaign_id=campaign_id, owner=tz_campaign['owner'])
+            campaign.save()
+        except:
+            return {
+               'status': 404,
+               'msg': 'Campaign Doesn\'t exists'
+            }, 404
+
+    address = request.args.get('address')
+    user = User.objects(address=address).first()
+
+    actions = Integration.objects(user=user, campaign_id=campaign_id).all()
+    all_actions = []
+    if address == campaign['owner']:
+        all_actions = Integration.objects(campaign_id=campaign_id).all()
+
+    return {
+        'activity': {
+           action.integration: {
+               'approved': action.approved,
+               'redeemed': action.redeem,
+               'data': action.data
+           } for action in actions
+        },
+        'history': {
+            action.user.address: {
+                'approved': action.approved,
+                'redeemed': action.redeem,
+                'data': action.data,
+                'integration_id': action.integration,
+                'campaign': action.campaign_id,
+                'user': {
+                    'email': user.email,
+                    'address': user.address,
+                    'discord': f'{user.discord.username}#{user.discord.discriminator}' if user.discord else '',
+                    'twitter': f'{user.twitter.screen_name}' if user.twitter else '',
+                }
+            } for action in all_actions
+        }
+    }
+
+@app.route('/s/redeem/<string:campaign_id>/<string:integration_id>', methods=['POST'])
+def redeem(campaign_id, integration_id):
+    try:
+        get_campaign(campaign_id)
+    except:
+        return {
+           'status': 404,
+           'msg': 'Campaign Doesn\'t exists'
+        }, 404
+
+    address = request.json.get('address')
+    tx = request.json.get('tx')
+    user = User.objects(address=address).first()
+    integration = Integration.objects(user=user, campaign_id=campaign_id, integration=integration_id).first()
+
+    if integration:
+        # Check if reward was redeemed
+        if integration.redeem:
+            return {
+               'status': 203,
+               'msg': 'Reward already claimed!'
+            }, 203
+
+        integration.redeem = True
+        integration.data['tx'] = tx
+        integration.save()
+
+    return {
+       'status': 404,
+       'msg': 'Campaign Doesn\'t exists'
+    }, 404
+
+
+
+@app.route("/s/check_question_reward/<string:campaign_id>/<string:integration_type>")
 def check_question_reward(campaign_id, integration_type):
     try:
         campaign_tz = get_campaign(campaign_id)
@@ -124,7 +220,7 @@ def check_question_reward(campaign_id, integration_type):
     }
 
 
-@app.route("/check_twitter_reward/<string:campaign_id>/<string:integration_type>")
+@app.route("/s/check_twitter_reward/<string:campaign_id>/<string:integration_type>", methods=['POST'])
 def check_twitter_reward(campaign_id, integration_type):
     try:
         campaign_tz = get_campaign(campaign_id)
@@ -136,10 +232,9 @@ def check_twitter_reward(campaign_id, integration_type):
 
     cid = campaign_tz['metadata_url'].split('ipfs://')[1]
 
-    print(url_for('twitter.authorized', _external=True))
-    if request.args.get('address'):
-        session['address'] = request.args.get('address')
-        address = request.args.get('address')
+    if request.json.get('address'):
+        session['address'] = request.json.get('address')
+        address = request.json.get('address')
     else:
         address = session['address']
 
@@ -344,43 +439,40 @@ def redirect_unauthorized(e):
     return redirect(url_for("discord_login"))
 
 
-@app.route("/me/")
-@requires_authorization
-def discord_me():
-    user = discord.fetch_user()
-    print(user.to_json())
+@app.route("/s/authenticated")
+def authenticated():
+    discord_auth = True
+    try:
+        discord.callback()
+    except:
+        discord_auth = False
 
-    return f"""
-    <html>
-        <head>
-            <title>{user.name}</title>
-        </head>
-        <body>
-            <img src='{user.avatar_url}' />
-        </body>
-    </html>"""
-
-# https://0d5e-2806-2f0-7020-73fb-7167-ab75-d2da-f9b2.ngrok.io/check_discord_reward/TEST_CAMPAIGN_1/DISCORD_JOIN_CHANNEL?address=tz1NGXTDR4cQHh5wQaW5vnv6V93fnaegPuEX
-class ReverseProxied(object):
-    """
-    Because we are reverse proxied from an aws load balancer
-    use environ/config to signal https
-    since flask ignores preferred_url_scheme in url_for calls
-    """
-
-    def __init__(self, app):
-        self.app = app
-
-    def __call__(self, environ, start_response):
-        # if one of x_forwarded or preferred_url is https, prefer it.
-        forwarded_scheme = environ.get("HTTP_X_FORWARDED_PROTO", None)
-        preferred_scheme = app.config.get("PREFERRED_URL_SCHEME", None)
-        if "https" in [forwarded_scheme, preferred_scheme]:
-            environ["wsgi.url_scheme"] = "https"
-        return self.app(environ, start_response)
+    return {
+        'twitter': twitter.authorized,
+        'discord': discord_auth
+    }
 
 
-app.wsgi_app = ReverseProxied(app.wsgi_app)
+# class ReverseProxied(object):
+#     """
+#     Because we are reverse proxied from an aws load balancer
+#     use environ/config to signal https
+#     since flask ignores preferred_url_scheme in url_for calls
+#     """
+#
+#     def __init__(self, app):
+#         self.app = app
+#
+#     def __call__(self, environ, start_response):
+#         # if one of x_forwarded or preferred_url is https, prefer it.
+#         forwarded_scheme = environ.get("HTTP_X_FORWARDED_PROTO", None)
+#         preferred_scheme = app.config.get("PREFERRED_URL_SCHEME", None)
+#         if "https" in [forwarded_scheme, preferred_scheme]:
+#             environ["wsgi.url_scheme"] = "https"
+#         return self.app(environ, start_response)
+
+
+# app.wsgi_app = ReverseProxied(app.wsgi_app)
 
 if __name__ == "__main__":
     app.run(debug=True)
