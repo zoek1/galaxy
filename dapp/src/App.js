@@ -82,7 +82,7 @@ export default function App() {
       console.log(address)
       await updateBalance(address);
 
-      return activeAccount.address;
+      return address;
     } catch (e) {
       console.log(e)
       console.log('Failed to get address')
@@ -104,11 +104,11 @@ export default function App() {
       element: <ViewCampaignPage address={address} ready={initReady}/>,
     },
     {
-      path:"/campaign/:campaignId/think",
+      path:"/campaign/:campaignId/question/:integrationId",
       element: <ThinkPage address={address} ready={initReady}/>
     },
     {
-      path:"/campaign/:campaignId/select",
+      path:"/campaign/:campaignId/select/:integrationId",
       element: <SelectPage address={address} ready={initReady}/>
     },
     {

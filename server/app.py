@@ -2,7 +2,7 @@ import os
 import re
 import uuid
 
-from flask import Flask, redirect, url_for, request, session
+from flask import Flask, redirect, url_for, request, session, current_app
 from flask_discord import DiscordOAuth2Session, requires_authorization, Unauthorized, exceptions
 from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
 from flask_mongoengine import MongoEngine
@@ -111,7 +111,7 @@ def cache(campaign_id):
                     'discord': f'{user.discord.username}#{user.discord.discriminator}' if user.discord else '',
                     'twitter': f'{user.twitter.screen_name}' if user.twitter else '',
                 }
-            } for action in all_actions
+            } for action in all_actions if action.user
         }
     }
 
@@ -148,8 +148,7 @@ def redeem(campaign_id, integration_id):
     }, 404
 
 
-
-@app.route("/s/check_question_reward/<string:campaign_id>/<string:integration_type>")
+@app.route("/s/check_question_reward/<string:campaign_id>/<string:integration_type>", methods=['POST'])
 def check_question_reward(campaign_id, integration_type):
     try:
         campaign_tz = get_campaign(campaign_id)
@@ -167,9 +166,9 @@ def check_question_reward(campaign_id, integration_type):
                    'msg': 'This method only support question and selection integrations'
                }, 400
 
-    if request.args.get('address'):
-        session['address'] = request.args.get('address')
-        address = request.args.get('address')
+    if request.json.get('address'):
+        session['address'] = request.json.get('address')
+        address = request.json.get('address')
     else:
         address = session['address']
 
@@ -199,7 +198,8 @@ def check_question_reward(campaign_id, integration_type):
             campaign_id=campaign_id,
             cid=cid)
 
-    response = request.args.get('response', '')
+    response = request.json.get('response', '')
+
     if response.strip() == '':
         return {
            'status': 400,
@@ -318,14 +318,26 @@ def check_twitter_reward(campaign_id, integration_type):
     }, 404
 
 
-@app.route("/login/")
+@app.route("/s/discord/")
 def discord_login():
-    session['address'] = request.args.get('address')
-
     return discord.create_session()
 
 
-@app.route("/callback/")
+@app.route("/s/discord/<string:campaign_id>")
+def discord_request_permissions(campaign_id):
+    session['address'] = request.args.get('address')
+
+    try:
+        user = discord.fetch_user()
+        print(user)
+        return redirect(f'{app.config["PREFERRED_URL_SCHEME"]}://{app.config["DOMAIN"]}/campaign/{campaign_id}')
+    except:
+        session['redirect_to'] = campaign_id
+
+    return redirect(url_for("discord_login"))
+
+
+@app.route("/s/discord/callback/")
 def discord_callback():
     try:
         discord.callback()
@@ -337,7 +349,9 @@ def discord_callback():
         discord_integration = User.objects(discord__id=user.id).first()
 
         if discord_integration:
-            return redirect(url_for(".discord_me"))
+            campaign_id = session.pop('redirect_to')
+            return redirect(f'{app.config["PREFERRED_URL_SCHEME"]}://{app.config["DOMAIN"]}/campaign/{campaign_id}')
+
 
         discord_integration = DiscordIntegration(
             id=user.id,
@@ -359,25 +373,25 @@ def discord_callback():
     except exceptions.AccessDenied:
         return redirect(url_for("discord_login"))
 
-    return redirect(url_for(".discord_me"))
+    return redirect(url_for(".redirect_to"))
 
 
-@app.route("/check_discord_reward/<string:campaign_id>/<string:integration_type>")
+@app.route("/s/check_discord_reward/<string:campaign_id>/<string:integration_type>", methods=["POST"])
 @requires_authorization
 def check_discord_reward(campaign_id, integration_type):
     try:
         campaign_tz = get_campaign(campaign_id)
     except:
         return {
-                   'status': 404,
-                   'msg': 'Campaign Doesn\'t exists'
-               }, 404
+           'status': 404,
+           'msg': 'Campaign Doesn\'t exists'
+        }, 404
 
     cid = campaign_tz['metadata_url'].split('ipfs://')[1]
     user = discord.fetch_user()
-
+    address = request.json.get('address')
     # integration_type = requests.args.get('integration', 'DISCORD_JOIN_CHANNEL')
-    user_obj = User.objects(email=user.email).first()
+    user_obj = User.objects(address=address).first()
     integration = Integration.objects(user=user_obj, campaign_id=campaign_id, integration=integration_type).first()
     if integration:
         # Check if reward was approved
@@ -419,6 +433,7 @@ def check_discord_reward(campaign_id, integration_type):
     if guild_id in guilds:
         # if not approve reward
         integration.approved = True
+        approve_campaign_integration(user_obj.address, campaign_id, integration_type)
         integration.save()
         # Update db
         return {
@@ -443,7 +458,8 @@ def redirect_unauthorized(e):
 def authenticated():
     discord_auth = True
     try:
-        discord.callback()
+        user = discord.fetch_user()
+        print(user)
     except:
         discord_auth = False
 
@@ -453,26 +469,26 @@ def authenticated():
     }
 
 
-# class ReverseProxied(object):
-#     """
-#     Because we are reverse proxied from an aws load balancer
-#     use environ/config to signal https
-#     since flask ignores preferred_url_scheme in url_for calls
-#     """
-#
-#     def __init__(self, app):
-#         self.app = app
-#
-#     def __call__(self, environ, start_response):
-#         # if one of x_forwarded or preferred_url is https, prefer it.
-#         forwarded_scheme = environ.get("HTTP_X_FORWARDED_PROTO", None)
-#         preferred_scheme = app.config.get("PREFERRED_URL_SCHEME", None)
-#         if "https" in [forwarded_scheme, preferred_scheme]:
-#             environ["wsgi.url_scheme"] = "https"
-#         return self.app(environ, start_response)
+class ReverseProxied(object):
+    """
+    Because we are reverse proxied from an aws load balancer
+    use environ/config to signal https
+    since flask ignores preferred_url_scheme in url_for calls
+    """
+
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        # if one of x_forwarded or preferred_url is https, prefer it.
+        forwarded_scheme = environ.get("HTTP_X_FORWARDED_PROTO", None)
+        preferred_scheme = app.config.get("PREFERRED_URL_SCHEME", None)
+        if "https" in [forwarded_scheme, preferred_scheme]:
+            environ["wsgi.url_scheme"] = "https"
+        return self.app(environ, start_response)
 
 
-# app.wsgi_app = ReverseProxied(app.wsgi_app)
+app.wsgi_app = ReverseProxied(app.wsgi_app)
 
 if __name__ == "__main__":
     app.run(debug=True)

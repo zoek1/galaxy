@@ -98,8 +98,14 @@ function ViewCampaignPage (props){
     window.location.href = `https://twitter.com/${screen_name}`;
   }
 
+  const discordOnClick = (integrationId) => () => {
+    const invitation_link = campaignData.integrations[integrationId].invitation_link;
+    window.location.href = invitation_link;
+  }
+
   const twitterCheck = (integrationId) => async (event) => {
     event.stopPropagation();
+    setDeactivate({...deactivate, [integrationId]: true})
 
     if (!auths.twitter) {
        window.location.href = `${config.DOMAIN}/s/twitter/${campaignId}`
@@ -118,13 +124,17 @@ function ViewCampaignPage (props){
     } catch (e) {
       alert(e)
     }
-  }
 
+    setDeactivate({...deactivate, [integrationId]: undefined})
+
+  }
+  console.log(campaign)
   const discordCheck = (integrationId) => async (event) => {
     event.stopPropagation();
+    setDeactivate({...deactivate, [integrationId]: true})
 
     if (!auths.discord) {
-       window.location.href = `${config.DOMAIN}/s/discord/${campaignId}`
+       window.location.href = `${config.DOMAIN}/s/discord/${campaignId}?${address}`
     }
 
     if (!address) {
@@ -132,14 +142,15 @@ function ViewCampaignPage (props){
     }
 
     try {
-      const data = jsonPost(`/s/check_discord_reward/${campaignId}/${integrationId}`, {
+      const data = await jsonPost(`/s/check_discord_reward/${campaignId}/${integrationId}`, {
         address
       })
       alert(data.msg);
       await retrieveCampaign();
     } catch (e) {
-      alert(e)
+      console.log(e)
     }
+    setDeactivate({...deactivate, [integrationId]: undefined})
   }
 
   const isRewarded = (integrationId) => {
@@ -151,6 +162,22 @@ function ViewCampaignPage (props){
       return rewardClaimed || rewardOnProcess;
     }
 
+    return false;
+  }
+
+  const isReadyToClaim = (integrationId) => {
+    if (campaign.activity) {
+       return campaign.activity.get(integrationId) !== undefined
+    }
+
+    return false;
+  }
+
+  const needWaitUntilMining = (integrationId) => {
+    if (cache.activity) {
+      const integration = cache.activity[integrationId];
+      return integration?.approved && !integration?.redeemed;
+    }
     return false;
   }
 
@@ -168,10 +195,12 @@ function ViewCampaignPage (props){
                                    imageIcon='bi bi-question'
                                    reward={field.amount}
                                    rewarded={isRewarded(field.integrationId)}
-                                   claim={campaign.activity && campaign.activity.get(field.integrationId) !== undefined }
+                                   claim={ isReadyToClaim(field.integrationId) }
                                    onRedeem={onRedeem(field.integrationId)}
-                                   onClick={ () => navigate(`/campaign/${campaignId}/think`) }
-                                   deactivated={deactivate[field.integrationId]}
+                                   onClick={ () => navigate(`/campaign/${campaignId}/question/${field.integrationId}`) }
+                                   deactivated={deactivate[field.integrationId] ||
+                                                (!isReadyToClaim(field.integrationId) &&
+                                                  needWaitUntilMining(field.integrationId))}
                 /> ||
               (field.integrationId.match(/CHOOSE_OPTION/)) &&
                 <IntegrationButton id={field.integrationId}
@@ -179,20 +208,26 @@ function ViewCampaignPage (props){
                                    imageIcon='bi bi-question'
                                    reward={field.amount}
                                    rewarded={isRewarded(field.integrationId)}
-                                   claim={campaign.activity && campaign.activity.get(field.integrationId) !== undefined}
+                                   claim={isReadyToClaim(field.integrationId)}
                                    onRedeem={onRedeem(field.integrationId)}
-                                   onClick={ () => navigate(`/campaign/${campaignId}/select`) }
-                                   deactivated={deactivate[field.integrationId]}
+                                   onClick={ () => navigate(`/campaign/${campaignId}/select/${field.integrationId}`) }
+                                   deactivated={deactivate[field.integrationId] ||
+                                                (!isReadyToClaim(field.integrationId) &&
+                                                  needWaitUntilMining(field.integrationId))}
                 /> ||
               (field.integrationId.match(/DISCORD_JOIN_CHANNEL/)) &&
                 <IntegrationButton id={field.integrationId}
                                    name={"Join us on Discord"}
                                    imageIcon='bi bi-discord'
                                    reward={field.amount}
-                                   rewarded={isRewarded(field.integrationId)}
-                                   claim={campaign.activity && campaign.activity.get(field.integrationId) !== undefined }
                                    onRedeem={onRedeem(field.integrationId)}
-                                   deactivated={deactivate[field.integrationId]}
+                                   rewarded={isRewarded(field.integrationId)}
+                                   claim={isReadyToClaim(field.integrationId)}
+                                   onClick={discordOnClick(field.integrationId)}
+                                   onCheck={discordCheck(field.integrationId)}
+                                   deactivated={deactivate[field.integrationId] ||
+                                                (!isReadyToClaim(field.integrationId) &&
+                                                  needWaitUntilMining(field.integrationId))}
                 /> ||
               (field.integrationId.match(/TWITTER_FOLLOW/)) &&
                 <IntegrationButton id={field.integrationId}
@@ -201,10 +236,12 @@ function ViewCampaignPage (props){
                                    reward={field.amount}
                                    onRedeem={onRedeem(field.integrationId)}
                                    rewarded={isRewarded(field.integrationId)}
-                                   claim={campaign.activity && campaign.activity.get(field.integrationId) !== undefined }
+                                   claim={isReadyToClaim(field.integrationId)}
                                    onClick={twitterOnClick(field.integrationId)}
                                    onCheck={twitterCheck(field.integrationId)}
-                                   deactivated={deactivate[field.integrationId]}
+                                   deactivated={deactivate[field.integrationId] ||
+                                                (!isReadyToClaim(field.integrationId) &&
+                                                  needWaitUntilMining(field.integrationId))}
                 />
               || <IntegrationButton id={field.integrationId} name={field.name} imageIcon={field.image}/>
             }
