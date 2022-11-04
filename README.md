@@ -1,5 +1,8 @@
 # Loyalty Dapp
 
+
+dApp: [https://galaxy.gordian.dev/](https://galaxy.gordian.dev/)
+
 ## Setup
 
 Clone the repository and enter the Loyalty Dapp directory.
