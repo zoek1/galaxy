@@ -112,8 +112,16 @@ export default function App() {
       element: <SelectPage address={address} ready={initReady}/>
     },
     {
-      path:"/new",
+      path:"/campaign/new",
       element: <NewCampaignPage address={address} ready={initReady}/>
+    },
+    {
+      path:"/campaigns",
+      element: <IndexPage address={address} ready={initReady} />
+    },
+    {
+      path:"/rewards",
+      element: <IndexPage address={address} ready={initReady} />
     },
   ]);
 

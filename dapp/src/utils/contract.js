@@ -16,6 +16,16 @@ export const get_campaign_activity = async (address, campaigId, contract, s=null
     });
 }
 
+export const getIntegrations = async (contract, s=null) => {
+    const storage = !s ? await contract.storage() : s;
+
+    const integrations = await storage['integrations'];
+
+    return [...integrations.entries()].map(
+        ([key, obj]) => ({...obj, id: key})
+    )
+
+}
 
 export const get_campaign = async (address, contract, campaignId, s=null) => {
     const storage = !s ? await contract.storage() : s;
@@ -49,8 +59,6 @@ export const get_campaign = async (address, contract, campaignId, s=null) => {
 export const getBalance = async (address, Tezos) => {
     const contract = await Tezos.contract.at(config.LOYALTY_CONTRACT);
     const storage = await contract.storage();
-    console.log(address)
-    console.log(storage['ledger'])
     const balance = storage['ledger'].get(address);
 
     return balance || 0;

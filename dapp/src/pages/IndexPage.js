@@ -10,8 +10,8 @@ const IndexPage = (props) => {
           <img src="/galaxy512.png"></img>
         </div>
         <div className="content-button">
-          <Link to={'/new'}><button className="btn1 btn btn-primary ">New Campaign</button></Link>
-          <Link to={'/campaign/TEST_CAMPAIGN_3'}><button className="btn2 btn btn-primary">View Campaign</button></Link>
+          <Link to={'/campaign/new'}><button className="btn1 btn btn-primary">New Campaign</button></Link>
+          <Link to={'/campaigns'}><button className="btn2 btn btn-primary">View Campaigns</button></Link>
         </div>
       </div>
     );
