@@ -157,3 +157,12 @@ form label{
   border-color: var(--button-primary);
   width: 100%;
 }
+
+.input-group{
+  width: 30%!important;
+}
+
+button.btnPublish{
+  background-color: var(--button-primary);
+  border-color: var(--button-primary);
+}

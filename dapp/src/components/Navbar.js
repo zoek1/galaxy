@@ -23,6 +23,9 @@ function Navbar(props){
              <a className="nav-link" href="/rewards">Rewards</a>
            </li>
            <li className="nav-item">
+             <a className="nav-link" href="/rewards/new">New Rewards</a>
+           </li>
+           <li className="nav-item">
              {
                !address ? <a className='nav-link ' href="#" onClick={onLogin}>Log In</a> :
                   <div className="log d-flex align-items-baseline">
