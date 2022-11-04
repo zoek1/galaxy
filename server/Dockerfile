@@ -18,6 +18,6 @@ RUN pip install --user -r requirements.txt
 
 COPY app.py /code/
 COPY models.py /code/
-
+COPY config.toml /code/
 
 ENTRYPOINT flask run -h 0.0.0.0 -p 8000
