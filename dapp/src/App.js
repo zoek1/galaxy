@@ -18,6 +18,7 @@ import NewCampaignPage from './pages/NewCampaignPage';
 import ViewCampaignPage from './pages/ViewCampaignPage';
 import ThinkPage from './pages/ThinkPage';
 import SelectPage from './pages/SelectPage';
+import CampaignPage from './pages/CampaignPage';
 import {getBalance} from "./utils/contract";
 
 
@@ -117,7 +118,7 @@ export default function App() {
     },
     {
       path:"/campaigns",
-      element: <IndexPage address={address} ready={initReady} />
+      element: <CampaignPage address={address} ready={initReady} />
     },
     {
       path:"/rewards",

@@ -112,3 +112,20 @@ form label{
 .form-select{
   width: 70%!important;
 }
+
+.cardView{
+  width: 18rem;
+  margin: 1em;
+}
+
+.containerCampaign h2{
+  margin: 1em;
+}
+
+.icon li{
+  list-style: none;
+}
+
+.icon li i{
+  margin: .5em;
+}
