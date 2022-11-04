@@ -56,6 +56,13 @@ export const get_campaign = async (address, contract, campaignId, s=null) => {
     }
 }
 
+export const getCampaigns = async (contract, campaignIds, s = null) => {
+    const storage = !s ? await contract.storage() : s;
+    const campaigns = await storage['campaigns']
+
+    return await campaigns.getMultipleValues(campaignIds)
+}
+
 export const getBalance = async (address, Tezos) => {
     const contract = await Tezos.contract.at(config.LOYALTY_CONTRACT);
     const storage = await contract.storage();

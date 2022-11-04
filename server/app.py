@@ -69,6 +69,31 @@ def redirect_to():
     return redirect(f'{app.config["PREFERRED_URL_SCHEME"]}://{app.config["DOMAIN"]}/campaign/{path}')
 
 
+@app.route('/s/campaigns', methods=['GET', 'POST'])
+def register_campaign():
+    if request.method == 'GET':
+        return {
+            campaign.campaign_id: {
+                'owner': campaign.owner
+            } for campaign in Campaign.objects().all()}
+
+    owner = request.json.get('address')
+    campaign_id = request.json.get('campaignId')
+
+    campaign = Campaign(campaign_id=campaign_id, owner=owner)
+    if not owner or  not campaign_id:
+        return {
+           'status': 400,
+           'msg': 'Bad data provided'
+        }, 400
+
+    campaign.save()
+
+    return {
+        'status': 201,
+        'msg': 'Campaign cached'
+    }, 201
+
 @app.route('/s/cache/<string:campaign_id>')
 def cache(campaign_id):
     campaign = Campaign.objects(campaign_id=campaign_id).first()

@@ -6,7 +6,7 @@ import {Schema} from "@taquito/michelson-encoder";
 import { v4 as uuidv4 } from 'uuid';
 import config from "../config";
 import {Link} from "react-router-dom";
-import {jsonToPinata} from "../utils/request";
+import {jsonToPinata, saveCampaign} from "../utils/request";
 
 
 function NewCampaignPage (props){
@@ -202,6 +202,12 @@ function NewCampaignPage (props){
       alert('Contract Submitted, wait until it being mined!')
       setCampaign(campaignId);
       setTx(res['transactionHash'])
+
+      const campaignResp = await saveCampaign({
+        address,
+        campaignId
+      })
+      console.log(campaignResp)
     }
     setDisabled(false);
     console.log(metadata);

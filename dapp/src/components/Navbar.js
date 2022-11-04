@@ -1,10 +1,11 @@
 import React, {useContext} from 'react'
 import Context from "../context";
 import config from "../config";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 function Navbar(props){
   const {address, onLogin, onLogout, balance } = useContext(Context);
+  const navigate = useNavigate();
 
   return(
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -17,13 +18,13 @@ function Navbar(props){
         <div className="d-flex justify-content-end align-items-baseline" id="navbarTogglerDemo01">
          <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
            <li className="nav-item">
-             <a className="nav-link" href="/campaigns">Campaign</a>
+             <a className="nav-link" onClick={() => navigate('/campaigns')}>Campaign</a>
            </li>
            <li className="nav-item">
-             <a className="nav-link" href="/rewards">Rewards</a>
+             <a className="nav-link" onClick={() => navigate('/rewards')}>Rewards</a>
            </li>
            <li className="nav-item">
-             <a className="nav-link" href="/rewards/new">New Rewards</a>
+             <a className="nav-link" onClick={() => navigate('/rewards/new')}>New Rewards</a>
            </li>
            <li className="nav-item">
              {
