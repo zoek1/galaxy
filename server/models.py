@@ -55,3 +55,8 @@ class Integration(me.Document):
     data = me.DictField(default={}, null=False)
     approved = me.BooleanField(default=False)
     redeem = me.BooleanField(default=False)
+
+
+class Campaign(me.Document):
+    campaign_id = me.StringField(required=True, unique=True)
+    owner = me.StringField(required=True)

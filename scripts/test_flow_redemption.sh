@@ -18,4 +18,5 @@ taq transfer Campaign --param Campaign.parameter.approve_redeem_brain_discord.tz
 
 taq transfer Campaign --param Campaign.parameter.update_brain_integrations.tz
 taq transfer Campaign --param Campaign.parameter.update_cupcake_integrations.tz
-taq transfer Campaign --param Campaign.parameter.update_brain_deadline.tz 
+taq transfer Campaign --param Campaign.parameter.update_brain_deadline.tz
+

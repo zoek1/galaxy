@@ -5631,6 +5631,11 @@ https-proxy-agent@^5.0.0:
     agent-base "6"
     debug "4"
 
+human-date@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/human-date/-/human-date-1.4.0.tgz#88bb62bd804d00fd12ee2f47dc3c3bbb1e55f99a"
+  integrity sha512-jhEvaL0yj8LZnphQqOylapYTLB91ZIaNuDnrHqDR/3/P1Mhil1kh1qgm75xQ/qi7iZSPKIjqrEx6kw9gTcdeuA==
+
 human-signals@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
