@@ -113,7 +113,7 @@ function SelectPage (props) {
           </div>
           <div className="mt-2">
           {
-            options.map(op =>(
+            options ? options.map(op =>(
               <div className="mt-3  fs-4 form-check ">
                 <input onClick={(e) => setResponse(e.target.id)}
                        className="form-check-input"
@@ -126,7 +126,7 @@ function SelectPage (props) {
                   {op}
                 </label>
               </div>
-            ))
+            )) : <></>
           }
           </div>
 

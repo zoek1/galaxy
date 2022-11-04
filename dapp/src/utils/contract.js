@@ -80,6 +80,31 @@ const getDapp = async () => {
     return dAppClient;
 }
 
+export const addCampaign = async (michelsonData, Tezos) => {
+    const dAppClient = await getDapp();
+
+    try {
+        const result = await dAppClient.requestOperation({
+            operationDetails: [{
+                kind: TezosOperationType.TRANSACTION,
+                amount: "0",
+                destination: config.LOYALTY_CONTRACT,
+                parameters: {
+                    entrypoint: "addCampaign",
+                    value: michelsonData
+                },
+            }],
+        });
+
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.log(error)
+
+    }
+}
+
+
 export const redeem = async (campaignId, integrationId, Tezos) => {
     const dAppClient = await getDapp();
 
@@ -99,15 +124,6 @@ export const redeem = async (campaignId, integrationId, Tezos) => {
           }],
         });
 
-        /*
-        const data ={
-            "version": "2",
-            "id": "6e9b5333-54ef-88f9-11fb-c1162ed4cf58",
-            "senderId": "3dngUpc7q9aph",
-            "type": "operation_response",
-            "transactionHash": "oofSjSUpndcWMCCNS4NsuSkX98NBcxNnFMxyS9KFdfspHZaKJeJ"
-        }
-        */
         console.log(result);
         return result;
     } catch (error) {
@@ -116,16 +132,4 @@ export const redeem = async (campaignId, integrationId, Tezos) => {
         error?.data[1]?.with?.string
       );
     }
-/*
-    const contract = await Tezos.wallet.at(config.LOYALTY_CONTRACT);
-    const result = await contract
-        .methods
-        .redeem(campaignId, integrationId)
-        .send();
-
-    console.log(result);
-
-    return result;
-
- */
 }

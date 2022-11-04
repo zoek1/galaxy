@@ -1,3 +1,4 @@
+import json
 import os
 import re
 import uuid
@@ -32,7 +33,7 @@ CORS(app)
 pytezos = pytezos.using(key=app.config['ACCOUNT'])
 discord = DiscordOAuth2Session(app)
 twitter_bp = make_twitter_blueprint()
-app.register_blueprint(twitter_bp, url_prefix='/s/t', redirect_to='redirect_to')
+app.register_blueprint(twitter_bp, url_prefix='/s/t', redirect_to='.redirect_to')
 
 
 def get_campaign(campaign_id):
@@ -316,6 +317,28 @@ def check_twitter_reward(campaign_id, integration_type):
         'status': 404,
         'msg': 'User not followed account',
     }, 404
+
+@app.route("/s/pinata", methods=['POST'])
+def pinataPin():
+    address = request.json.get('address')
+    payload = json.dumps(request.json.get('data'))
+
+    url = "https://api.pinata.cloud/pinning/pinJSONToIPFS"
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {app.config["PINATA_JWT"]}'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    print(dir(response))
+
+    return {
+        'status': 200,
+        'ipfs': f'ipfs://{response.json().get("IpfsHash")}'
+    }
+
 
 
 @app.route("/s/discord/")

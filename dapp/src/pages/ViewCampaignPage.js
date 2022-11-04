@@ -112,11 +112,13 @@ function ViewCampaignPage (props){
     }
 
     if (!address) {
-      await context.onLogin();
+      alert('Log in to check rewards');
+      setDeactivate({...deactivate, [integrationId]: false})
+      return;
     }
 
     try {
-      const data = jsonPost(`/s/check_twitter_reward/${campaignId}/${integrationId}`, {
+      const data = await jsonPost(`/s/check_twitter_reward/${campaignId}/${integrationId}`, {
         address
       })
       alert(data.msg);
@@ -128,17 +130,23 @@ function ViewCampaignPage (props){
     setDeactivate({...deactivate, [integrationId]: undefined})
 
   }
+  console.log('==================')
   console.log(campaign)
+  console.log(campaignData)
+  console.log(cache)
+  console.log('==================')
   const discordCheck = (integrationId) => async (event) => {
     event.stopPropagation();
     setDeactivate({...deactivate, [integrationId]: true})
 
-    if (!auths.discord) {
-       window.location.href = `${config.DOMAIN}/s/discord/${campaignId}?${address}`
+    if (!address) {
+      alert('Log in to check rewards');
+      setDeactivate({...deactivate, [integrationId]: false})
+      return;
     }
 
-    if (!address) {
-      await context.onLogin();
+    if (!auths.discord) {
+       window.location.href = `${config.DOMAIN}/s/discord/${campaignId}?${address}`
     }
 
     try {
