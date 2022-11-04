@@ -53,7 +53,7 @@ div .address p{
 .content-button .btn{
   margin: 1em;
   background-color: var(--button-primary);
-    border-color: var(--button-primary);
+  border-color: var(--button-primary);
   color: var(--button-text);
   width: 200px;
 }
@@ -118,6 +118,14 @@ form label{
   margin: 1em;
 }
 
+.cardView h5{
+  font-size: 1rem;
+}
+
+.cardView p{
+  font-size: 0.9rem;
+}
+
 .containerCampaign h2{
   margin: 1em;
 }
@@ -128,4 +136,24 @@ form label{
 
 .icon li i{
   margin: .5em;
+}
+
+.cardReward{
+  width: 18rem;
+  margin: 1em;
+}
+
+.cardReward h5{
+  font-size: 1rem;
+}
+
+.cardReward p{
+  font-size: 0.9rem;
+}
+
+.cardReward button{
+  margin: 1em 0;
+  background-color: var(--button-primary);
+  border-color: var(--button-primary);
+  width: 100%;
 }

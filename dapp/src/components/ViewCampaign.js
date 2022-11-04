@@ -1,10 +1,6 @@
-import React, {useContext} from 'react'
-import Context from "../context";
-import config from "../config";
+import React from 'react'
 
-function ViewCampaign(props){
-  const {titleCard, rewards, duration, integrations } = useContext(Context);
-
+function ViewCampaign(){
   return(
     <div className="card cardView">
       <div className="card-header">
