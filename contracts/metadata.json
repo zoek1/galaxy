@@ -1,0 +1,7 @@
+{
+  "name": "Galaxy Customer Token Contract",
+  "description": "FA1.2 & Customer Reward Implementations of gLxY",
+  "authors": ["Miguel Gordian <miguel@gordian.dev>"],
+  "homepage":  "https://galaxy.gordian.dev",
+  "interfaces": [ "TZIP-007-2021-01-29"]
+}
