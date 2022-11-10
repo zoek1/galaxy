@@ -17,9 +17,9 @@ type action =
 |    Redeem         of redeem
 |    Transfer       of transfer
 |    Approve        of approve
-|    GetAllowance   of getAllowance
+|    GetAllowance   of getAllowance * nat contract
 |    GetBalance     of getBalance
-|    GetTotalSupply of getTotalSupply
+|    GetTotalSupply of (unit * getTotalSupply )
 
 
 let main (a,s: action * storage) =

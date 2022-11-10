@@ -7,6 +7,9 @@ type tokens = nat
 
 type metadata = (string, bytes) big_map
 
+type token_metadata = (nat, (nat * (string, bytes)  map)) big_map
+
+
 type integration = {
     name: string;
     provider: string;

@@ -7,18 +7,19 @@ type transfer =
    [@annot:to]to_: address; 
    value: nat; 
 }
-type approve = {
+type approve =
+[@layout:comb] {
     spender : address;
     value   : nat;
 }
 
-type getAllowance = {
+type getAllowance  = {
     owner    : address;
     spender  : address;
-    callback : nat contract;
 }
 
-type getBalance = {
+type getBalance =
+[@layout:comb] {
     owner    : address;
     callback : nat contract;
 }

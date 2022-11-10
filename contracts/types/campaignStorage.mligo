@@ -3,6 +3,7 @@
 
 type storage = {
     metadata           : metadata;
+    token_metadata     : token_metadata;
     integrations       : integrations;
     campaigns          : campaigns;
     user_campaigns     : user_campaigns;
