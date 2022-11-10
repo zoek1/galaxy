@@ -6,7 +6,7 @@ import {Schema} from "@taquito/michelson-encoder";
 import { v4 as uuidv4 } from 'uuid';
 import config from "../config";
 import {Link} from "react-router-dom";
-import {jsonToPinata, saveCampaign} from "../utils/request";
+import {jsonToIPFS, saveCampaign} from "../utils/request";
 
 
 function NewCampaignPage (props){
@@ -174,12 +174,12 @@ function NewCampaignPage (props){
           }
           ];
 
-    const pinataRes = await jsonToPinata('/s/pinata', {
+    const ipfsRes = await jsonToIPFS({
         address,
         data: metadata
       })
 
-    console.log(pinataRes)
+    console.log(ipfsRes)
 
 
     const storageSchema = new Schema(storageType);
@@ -188,7 +188,7 @@ function NewCampaignPage (props){
       name: name,
       deadline: deadline.toString() + ':00Z',
       campaign_id: campaignId,
-      metadata_url: pinataRes.ipfs,
+      metadata_url: ipfsRes.ipfs,
       integrations: activeIntegrations.reduce((prev, current) =>  {
         return {...prev, [current.id]: current.reward};
       }, {})

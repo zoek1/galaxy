@@ -17,8 +17,8 @@ export const jsonGet = async (url, params) => {
     return await res.json();
 }
 
-export const jsonToPinata = async (url, body) => {
-    const res = await fetch(url, {
+export const jsonToIPFS = async (body) => {
+    const res = await fetch('/s/ipfs', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
