@@ -343,16 +343,16 @@ def check_twitter_reward(campaign_id, integration_type):
         'msg': 'User not followed account',
     }, 404
 
-@app.route("/s/pinata", methods=['POST'])
-def pinataPin():
+@app.route("/s/ipfs", methods=['POST'])
+def upload_ipfs():
     address = request.json.get('address')
     payload = json.dumps(request.json.get('data'))
 
-    url = "https://api.pinata.cloud/pinning/pinJSONToIPFS"
+    url = "https://api.web3.storage/upload"
 
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': f'Bearer {app.config["PINATA_JWT"]}'
+        'Authorization': f'Bearer {app.config["WEB3_STORAGE"]}'
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -361,7 +361,7 @@ def pinataPin():
 
     return {
         'status': 200,
-        'ipfs': f'ipfs://{response.json().get("IpfsHash")}'
+        'ipfs': f'ipfs://{response.json().get("cid")}'
     }
 
 

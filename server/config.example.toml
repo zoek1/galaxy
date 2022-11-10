@@ -10,3 +10,4 @@ DISCORD_REDIRECT_URI="https://127.0.0.1/callback/"
 ACCOUNT="" # Your Private key Tezos
 CONTRACT="KT1WWwuMW19d7d1cTwMthiWHiEbDJK1DVvZg"
 PREFERRED_URL_SCHEME = 'https'
+WEB3_STORAGE = ""
