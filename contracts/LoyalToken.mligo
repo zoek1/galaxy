@@ -4,9 +4,9 @@
 type action =
       Transfer       of transfer
 |    Approve        of approve
-|    GetAllowance   of getAllowance
+|    GetAllowance   of getAllowance * nat contract
 |    GetBalance     of getBalance
-|    GetTotalSupply of getTotalSupply
+|    GetTotalSupply of (unit * getTotalSupply)
 
 let transfer (p,s : transfer * storage) : operation list * storage =
    let new_allowances =
@@ -46,12 +46,12 @@ let approve (p,s : approve * storage) : operation list * storage =
         let new_allowances = Big_map.update (p.spender, Tezos.get_sender()) (Some (p.value)) s.allowances in
         ([] : operation list), {s with allowances = new_allowances}
 
-let getAllowance (p,s : getAllowance * storage) : operation list * storage =
+let getAllowance ((p, callback),s : (getAllowance * nat contract) * storage) : operation list * storage =
     let value = match Big_map.find_opt (p.owner, p.spender) s.allowances with
         Some value -> value
     |    None -> 0n
     in
-    let op = Tezos.transaction value 0mutez p.callback in
+    let op = Tezos.transaction value 0mutez callback in
     ([op],s)
 
 let getBalance (p,s : getBalance * storage) : operation list * storage =
@@ -62,7 +62,7 @@ let getBalance (p,s : getBalance * storage) : operation list * storage =
     let op = Tezos.transaction value 0mutez p.callback in
     ([op],s)
 
-let getTotalSupply (p,s : getTotalSupply * storage) : operation list * storage =
+let getTotalSupply ((_, p),s : (unit * getTotalSupply) * storage) : operation list * storage =
   let total = s.totalSupply in
   let op    = Tezos.transaction total 0mutez p.callback in
   ([op],s)
