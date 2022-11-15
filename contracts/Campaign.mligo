@@ -5,6 +5,8 @@
 #include "actions/integrations.mligo"
 #include "actions/campaigns.mligo"
 #include "actions/redeem.mligo"
+#include "actions/rewards.mligo"
+
 
 #include "LoyalToken.mligo"
 
@@ -15,6 +17,8 @@ type action =
 |    UpdateCampaignDeadline of update_deadline
 |    ApproveRedeem  of redemption
 |    Redeem         of redeem
+|    AddReward      of reward_id * price * existence
+|    RedeemReward   of reward_id
 |    Transfer       of transfer
 |    Approve        of approve
 |    GetAllowance   of getAllowance * nat contract
@@ -30,6 +34,8 @@ let main (a,s: action * storage) =
    |   UpdateCampaignDeadline p -> updateCampaignDeadline (p,s)
    |   ApproveRedeem p -> approveRedeem (p,s)
    |   Redeem p -> redeem (p,s)
+   |   AddReward p ->   addReward (((p.0: reward_id), ((p.1, p.2):stock)), s)
+   |   RedeemReward p -> redeemReward (p,s)
    |   Transfer p -> transfer (p,s)
    |   Approve  p -> approve (p,s)
    |   GetAllowance p -> getAllowance (p,s)

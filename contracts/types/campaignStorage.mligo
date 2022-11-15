@@ -8,6 +8,8 @@ type storage = {
     campaigns          : campaigns;
     user_campaigns     : user_campaigns;
     join_user_campaign : join_user_campaign;
+    rewards            : rewards;
+    redeem_rewards     : redeem_rewards;
     admin              : address;
     ledger             : ledger;
     allowances         : allowances;
