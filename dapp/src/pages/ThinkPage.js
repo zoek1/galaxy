@@ -63,9 +63,12 @@ function ThinkPage (props) {
   }, [campaign])
 
   const onRedeem = async () => {
+    if (!address) {
+      return await context.onLogin();
+    }
+
     setDeactivate(true)
     try {
-      const address = await context.onLogin();
       const res = await jsonPost(`/s/check_question_reward/${campaignId}/${integrationId}`, {
         response,
         address,

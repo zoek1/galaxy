@@ -111,6 +111,30 @@ export const addCampaign = async (michelsonData, Tezos) => {
     }
 }
 
+export const addReward= async (michelsonData, Tezos) => {
+    const dAppClient = await getDapp();
+
+    try {
+        const result = await dAppClient.requestOperation({
+            operationDetails: [{
+                kind: TezosOperationType.TRANSACTION,
+                amount: "0",
+                destination: config.LOYALTY_CONTRACT,
+                parameters: {
+                    entrypoint: "addReward",
+                    value: michelsonData
+                },
+            }],
+        });
+
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.log(error)
+
+    }
+}
+
 
 export const redeem = async (campaignId, integrationId, Tezos) => {
     const dAppClient = await getDapp();

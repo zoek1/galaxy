@@ -60,3 +60,9 @@ class Integration(me.Document):
 class Campaign(me.Document):
     campaign_id = me.StringField(required=True, unique=True)
     owner = me.StringField(required=True)
+
+
+class Rewards(me.Document):
+    reward_id = me.StringField(required=True, unique=True)
+    owner = me.StringField(required=True)
+    ipfs = me.StringField(required=True)
