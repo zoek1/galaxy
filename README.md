@@ -1,15 +1,15 @@
-# Loyalty Dapp
+# Galaxy - Campaigns & Rewards
 
 
 dApp: [https://galaxy.gordian.dev/](https://galaxy.gordian.dev/)
 
 ## Setup
 
-Clone the repository and enter the Loyalty Dapp directory.
+Clone the repository and enter the Galaxy Dapp directory.
 
 ```
-git clone https://github.com/zoek1/loyalty-dapp.git
-cd loyalty-dapp/dapp
+git clone https://github.com/zoek1/galaxy.git
+cd galaxy/dapp
 ```
 
 ## Run
