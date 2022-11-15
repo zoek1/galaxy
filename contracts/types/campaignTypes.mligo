@@ -15,6 +15,7 @@ type metadata = (string, bytes) big_map
 type token_metadata = (nat, (nat * (string, bytes)  map)) big_map
 
 type reward = reward_id * stock 
+
 type integration = {
     name: string;
     provider: string;
