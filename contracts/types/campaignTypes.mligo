@@ -2,6 +2,11 @@
 #define CAMPAIGN_TYPES
 
 type campaign_id = string
+type existence = nat
+type price = nat
+type stock = price * existence
+type reward_id = string
+
 type integration_id = string
 type tokens = nat
 
@@ -9,6 +14,7 @@ type metadata = (string, bytes) big_map
 
 type token_metadata = (nat, (nat * (string, bytes)  map)) big_map
 
+type reward = reward_id * stock 
 
 type integration = {
     name: string;

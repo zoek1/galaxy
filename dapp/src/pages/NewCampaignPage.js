@@ -313,6 +313,8 @@ function NewCampaignPage (props){
                         className="form-select"
                         value={selectedIntegration}
                         onChange={(e) => setSelectedIntegration(e.target.value)}>
+                  <option selected disabled>Open this select menu</option>
+
                   {
                     integrations.map((integration, index) => {
                       return <option selected value={integration.id}>{integration.name}</option>

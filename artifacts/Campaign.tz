@@ -5,18 +5,17 @@
                              (string %metadata_url))
                        (string %name))
                     (pair %addIntegration string (pair (bool %active) (string %name)) (string %provider)))
-                (or (pair %approve (address %spender) (nat %value))
-                    (pair %approveRedeem
+                (or (pair %addReward (pair string nat) nat)
+                    (pair %approve (address %spender) (nat %value))))
+            (or (or (pair %approveRedeem
                        (pair (pair (string %campaign) (nat %earned)) (string %integration) (string %proof))
-                       (address %spender))))
-            (or (or (pair %getAllowance
-                       (pair (contract %callback nat) (address %owner))
                        (address %spender))
-                    (pair %getBalance (contract %callback nat) (address %owner)))
-                (or (contract %getTotalSupply nat)
-                    (pair %redeem (string %campaign) (string %integration)))))
-        (or (or (pair %transfer (address %from) (address %to) (nat %value))
-                (pair %updateCampaignDeadline (string %campaign_id) (timestamp %deadline)))
+                    (pair %getAllowance (pair (address %owner) (address %spender)) (contract nat)))
+                (or (pair %getBalance (address %owner) (contract %callback nat))
+                    (pair %getTotalSupply unit (contract nat)))))
+        (or (or (or (pair %redeem (string %campaign) (string %integration)) (string %redeemReward))
+                (or (pair %transfer (address %from) (address %to) (nat %value))
+                    (pair %updateCampaignDeadline (string %campaign_id) (timestamp %deadline))))
             (pair %updateCampaignIntegrations
                (string %campaign_id)
                (map %integrations string nat)))) ;
@@ -37,7 +36,10 @@
                          (map string (pair (pair (bool %claimed) (nat %earned)) (string %proof))))
                       (big_map %ledger address nat))
                 (big_map %metadata string bytes)
-                (nat %totalSupply))
+                (list %redeem_rewards (pair (pair string nat) timestamp address)))
+          (pair (map %rewards string (pair nat nat))
+                (big_map %token_metadata nat (pair nat (map string bytes))))
+          (nat %totalSupply)
           (big_map %user_campaigns address (pair (set %created string) (set %joined string)))) ;
   code { LAMBDA
            (pair (map string (pair (pair bool string) string)) string nat)
@@ -69,10 +71,166 @@
                       CONCAT ;
                       FAILWITH }
                     { DROP ; UNIT } } } ;
-         SWAP ;
+         LAMBDA
+           (pair (pair address address nat)
+                 (pair (pair (pair address (big_map (pair address address) nat))
+                             (big_map
+                                string
+                                (pair (pair (pair timestamp timestamp) (map string nat) string) string address))
+                             (map string (pair (pair bool string) string)))
+                       (pair (big_map (pair address string) (map string (pair (pair bool nat) string)))
+                             (big_map address nat))
+                       (big_map string bytes)
+                       (list (pair (pair string nat) timestamp address)))
+                 (pair (map string (pair nat nat)) (big_map nat (pair nat (map string bytes))))
+                 nat
+                 (big_map address (pair (set string) (set string))))
+           (pair (list operation)
+                 (pair (pair (pair address (big_map (pair address address) nat))
+                             (big_map
+                                string
+                                (pair (pair (pair timestamp timestamp) (map string nat) string) string address))
+                             (map string (pair (pair bool string) string)))
+                       (pair (big_map (pair address string) (map string (pair (pair bool nat) string)))
+                             (big_map address nat))
+                       (big_map string bytes)
+                       (list (pair (pair string nat) timestamp address)))
+                 (pair (map string (pair nat nat)) (big_map nat (pair nat (map string bytes))))
+                 nat
+                 (big_map address (pair (set string) (set string))))
+           { UNPAIR ;
+             DUP ;
+             CAR ;
+             SENDER ;
+             COMPARE ;
+             EQ ;
+             IF { DUP 2 ; CAR ; CAR ; CAR ; CDR }
+                { DUP 2 ;
+                  CAR ;
+                  CAR ;
+                  CAR ;
+                  CDR ;
+                  DUP 2 ;
+                  CAR ;
+                  SENDER ;
+                  PAIR ;
+                  GET ;
+                  IF_NONE { PUSH nat 0 } {} ;
+                  DUP 2 ;
+                  GET 4 ;
+                  DUP 2 ;
+                  COMPARE ;
+                  LT ;
+                  IF { DROP ; PUSH string "Not Enough Allowance" ; FAILWITH }
+                     { DUP 3 ;
+                       CAR ;
+                       CAR ;
+                       CAR ;
+                       CDR ;
+                       DUP 3 ;
+                       GET 4 ;
+                       DIG 2 ;
+                       SUB ;
+                       ABS ;
+                       SOME ;
+                       DUP 3 ;
+                       CAR ;
+                       SENDER ;
+                       PAIR ;
+                       UPDATE } } ;
+             DUP 3 ;
+             CAR ;
+             CDR ;
+             CAR ;
+             CDR ;
+             DUP 3 ;
+             CAR ;
+             GET ;
+             IF_NONE { PUSH nat 0 } {} ;
+             DUP 3 ;
+             GET 4 ;
+             DUP 2 ;
+             COMPARE ;
+             LT ;
+             IF { DROP 4 ; PUSH string "Not Enough Balance" ; FAILWITH }
+                { DUP 4 ;
+                  CAR ;
+                  CDR ;
+                  CAR ;
+                  CDR ;
+                  DUP 4 ;
+                  GET 4 ;
+                  DIG 2 ;
+                  SUB ;
+                  ABS ;
+                  SOME ;
+                  DUP 4 ;
+                  CAR ;
+                  UPDATE ;
+                  DUP 3 ;
+                  GET 4 ;
+                  DUP 5 ;
+                  CAR ;
+                  CDR ;
+                  CAR ;
+                  CDR ;
+                  DUP 5 ;
+                  GET 3 ;
+                  GET ;
+                  IF_NONE { PUSH nat 0 } {} ;
+                  ADD ;
+                  SOME ;
+                  DIG 3 ;
+                  GET 3 ;
+                  PAIR 3 ;
+                  DUP 3 ;
+                  CDR ;
+                  DUP 4 ;
+                  CAR ;
+                  CDR ;
+                  CDR ;
+                  DIG 2 ;
+                  UNPAIR 3 ;
+                  UPDATE ;
+                  DUP 5 ;
+                  CAR ;
+                  CDR ;
+                  CAR ;
+                  CAR ;
+                  PAIR ;
+                  PAIR ;
+                  DIG 3 ;
+                  CAR ;
+                  CAR ;
+                  PAIR ;
+                  PAIR ;
+                  DUP ;
+                  CDR ;
+                  DUP 2 ;
+                  CAR ;
+                  CDR ;
+                  DUP 3 ;
+                  CAR ;
+                  CAR ;
+                  CDR ;
+                  DIG 4 ;
+                  DIG 4 ;
+                  CAR ;
+                  CAR ;
+                  CAR ;
+                  CAR ;
+                  PAIR ;
+                  PAIR ;
+                  PAIR ;
+                  PAIR ;
+                  NIL operation ;
+                  PAIR } } ;
+         DIG 2 ;
          UNPAIR ;
          IF_LEFT
-           { IF_LEFT
+           { DIG 2 ;
+             DROP ;
+             IF_LEFT
                { IF_LEFT
                    { IF_LEFT
                        { UNPAIR ;
@@ -106,13 +264,43 @@
                              PAIR ;
                              DUP 4 ;
                              CDR ;
-                             DUP ;
+                             CDR ;
+                             CDR ;
+                             DUP 5 ;
+                             CDR ;
+                             DUP 6 ;
+                             CAR ;
+                             CDR ;
+                             DUP 7 ;
+                             CAR ;
+                             CAR ;
+                             CDR ;
+                             CDR ;
+                             DUP 8 ;
+                             CAR ;
+                             CAR ;
+                             CDR ;
+                             CAR ;
+                             DIG 5 ;
+                             SOME ;
+                             DUP 8 ;
+                             UPDATE ;
+                             PAIR ;
+                             DIG 6 ;
+                             CAR ;
+                             CAR ;
+                             CAR ;
+                             PAIR ;
+                             PAIR ;
+                             PAIR ;
+                             DUP 2 ;
                              DUP 4 ;
                              GET ;
                              IF_NONE
-                               { EMPTY_SET string ;
+                               { SWAP ;
                                  EMPTY_SET string ;
-                                 DUP 6 ;
+                                 EMPTY_SET string ;
+                                 DIG 5 ;
                                  PUSH bool True ;
                                  SWAP ;
                                  UPDATE ;
@@ -120,12 +308,12 @@
                                  SOME ;
                                  DIG 3 ;
                                  UPDATE }
-                               { SWAP ;
+                               { DIG 2 ;
                                  DUP 2 ;
                                  CDR ;
                                  DIG 2 ;
                                  CAR ;
-                                 DUP 6 ;
+                                 DIG 5 ;
                                  PUSH bool True ;
                                  SWAP ;
                                  UPDATE ;
@@ -133,30 +321,17 @@
                                  SOME ;
                                  DIG 3 ;
                                  UPDATE } ;
-                             DUP 4 ;
-                             CAR ;
-                             CDR ;
-                             DUP 5 ;
-                             CAR ;
-                             CAR ;
+                             DUP 2 ;
                              CDR ;
                              CDR ;
-                             DUP 6 ;
-                             CAR ;
-                             CAR ;
-                             CDR ;
-                             CAR ;
-                             DIG 4 ;
-                             SOME ;
-                             DIG 5 ;
-                             UPDATE ;
-                             PAIR ;
-                             DIG 3 ;
-                             CAR ;
-                             CAR ;
                              CAR ;
                              PAIR ;
+                             DUP 2 ;
+                             CDR ;
+                             CAR ;
                              PAIR ;
+                             SWAP ;
+                             CAR ;
                              PAIR ;
                              NIL operation ;
                              PAIR }
@@ -205,6 +380,52 @@
                    { DIG 2 ;
                      DROP ;
                      IF_LEFT
+                       { DUP ;
+                         CDR ;
+                         DUP 2 ;
+                         CAR ;
+                         CDR ;
+                         PAIR ;
+                         SWAP ;
+                         CAR ;
+                         CAR ;
+                         PUSH string "Stock should be greater than 0" ;
+                         PUSH nat 0 ;
+                         DUP 4 ;
+                         CDR ;
+                         COMPARE ;
+                         GT ;
+                         IF { DROP } { FAILWITH } ;
+                         DUP 3 ;
+                         CDR ;
+                         CAR ;
+                         CAR ;
+                         DUP 2 ;
+                         GET ;
+                         IF_NONE
+                           { DUP 3 ;
+                             CDR ;
+                             CDR ;
+                             DUP 4 ;
+                             CDR ;
+                             CAR ;
+                             CDR ;
+                             DUP 5 ;
+                             CDR ;
+                             CAR ;
+                             CAR ;
+                             DIG 4 ;
+                             SOME ;
+                             DIG 4 ;
+                             UPDATE ;
+                             PAIR ;
+                             PAIR ;
+                             SWAP ;
+                             CAR ;
+                             PAIR ;
+                             NIL operation ;
+                             PAIR }
+                           { DROP 4 ; PUSH string "Reward Already Exists" ; FAILWITH } }
                        { DUP 2 ;
                          CAR ;
                          CAR ;
@@ -264,7 +485,11 @@
                               PAIR ;
                               PAIR ;
                               NIL operation ;
-                              PAIR } }
+                              PAIR } } } }
+               { DIG 2 ;
+                 DROP ;
+                 IF_LEFT
+                   { IF_LEFT
                        { DUP 2 ;
                          CAR ;
                          CAR ;
@@ -337,44 +562,6 @@
                                { DROP 2 ; PUSH string "Reward already allowed" ; FAILWITH } ;
                              DUP 4 ;
                              CDR ;
-                             DUP 4 ;
-                             CDR ;
-                             GET ;
-                             IF_NONE
-                               { DUP 4 ;
-                                 CDR ;
-                                 EMPTY_SET string ;
-                                 DUP 5 ;
-                                 CAR ;
-                                 CAR ;
-                                 CAR ;
-                                 PUSH bool True ;
-                                 SWAP ;
-                                 UPDATE ;
-                                 EMPTY_SET string ;
-                                 PAIR ;
-                                 SOME ;
-                                 DUP 5 ;
-                                 CDR ;
-                                 UPDATE }
-                               { DUP 5 ;
-                                 CDR ;
-                                 DUP 2 ;
-                                 CDR ;
-                                 DUP 6 ;
-                                 CAR ;
-                                 CAR ;
-                                 CAR ;
-                                 PUSH bool True ;
-                                 SWAP ;
-                                 UPDATE ;
-                                 DIG 2 ;
-                                 CAR ;
-                                 PAIR ;
-                                 SOME ;
-                                 DUP 5 ;
-                                 CDR ;
-                                 UPDATE } ;
                              DUP 5 ;
                              CAR ;
                              CDR ;
@@ -401,10 +588,68 @@
                              UPDATE ;
                              PAIR ;
                              PAIR ;
-                             DIG 4 ;
+                             DUP 5 ;
                              CAR ;
                              CAR ;
                              PAIR ;
+                             PAIR ;
+                             DUP 4 ;
+                             CDR ;
+                             CDR ;
+                             CDR ;
+                             DUP 4 ;
+                             CDR ;
+                             GET ;
+                             IF_NONE
+                               { DIG 3 ;
+                                 CDR ;
+                                 CDR ;
+                                 CDR ;
+                                 EMPTY_SET string ;
+                                 DUP 5 ;
+                                 CAR ;
+                                 CAR ;
+                                 CAR ;
+                                 PUSH bool True ;
+                                 SWAP ;
+                                 UPDATE ;
+                                 EMPTY_SET string ;
+                                 PAIR ;
+                                 SOME ;
+                                 DUP 5 ;
+                                 CDR ;
+                                 UPDATE }
+                               { DIG 4 ;
+                                 CDR ;
+                                 CDR ;
+                                 CDR ;
+                                 DUP 2 ;
+                                 CDR ;
+                                 DUP 6 ;
+                                 CAR ;
+                                 CAR ;
+                                 CAR ;
+                                 PUSH bool True ;
+                                 SWAP ;
+                                 UPDATE ;
+                                 DIG 2 ;
+                                 CAR ;
+                                 PAIR ;
+                                 SOME ;
+                                 DUP 5 ;
+                                 CDR ;
+                                 UPDATE } ;
+                             DUP 2 ;
+                             CDR ;
+                             CDR ;
+                             CAR ;
+                             PAIR ;
+                             DUP 2 ;
+                             CDR ;
+                             CAR ;
+                             PAIR ;
+                             SWAP ;
+                             CAR ;
                              PAIR ;
                              SWAP ;
                              DIG 2 ;
@@ -497,31 +742,27 @@
                              PAIR ;
                              PAIR ;
                              NIL operation ;
-                             PAIR } } } }
-               { DIG 2 ;
-                 DROP ;
-                 IF_LEFT
-                   { IF_LEFT
-                       { DUP ;
-                         CAR ;
-                         CAR ;
+                             PAIR } }
+                       { UNPAIR ;
+                         SWAP ;
                          PUSH mutez 0 ;
                          DUP 4 ;
                          CAR ;
                          CAR ;
                          CAR ;
                          CDR ;
-                         DUP 4 ;
-                         CDR ;
-                         DIG 4 ;
-                         CAR ;
-                         CDR ;
-                         PAIR ;
+                         DIG 3 ;
                          GET ;
                          IF_NONE { PUSH nat 0 } {} ;
-                         TRANSFER_TOKENS }
+                         TRANSFER_TOKENS ;
+                         SWAP ;
+                         NIL operation ;
+                         DIG 2 ;
+                         CONS ;
+                         PAIR } }
+                   { IF_LEFT
                        { DUP ;
-                         CAR ;
+                         CDR ;
                          PUSH mutez 0 ;
                          DUP 4 ;
                          CAR ;
@@ -529,28 +770,21 @@
                          CAR ;
                          CDR ;
                          DIG 3 ;
-                         CDR ;
+                         CAR ;
                          GET ;
                          IF_NONE { PUSH nat 0 } {} ;
-                         TRANSFER_TOKENS } ;
+                         TRANSFER_TOKENS }
+                       { CDR ; PUSH mutez 0 ; DUP 3 ; CDR ; CDR ; CAR ; TRANSFER_TOKENS } ;
                      SWAP ;
                      NIL operation ;
                      DIG 2 ;
                      CONS ;
-                     PAIR }
+                     PAIR } } }
+           { IF_LEFT
+               { DIG 3 ;
+                 DROP ;
+                 IF_LEFT
                    { IF_LEFT
-                       { PUSH mutez 0 ;
-                         DUP 3 ;
-                         CAR ;
-                         CDR ;
-                         CDR ;
-                         CDR ;
-                         TRANSFER_TOKENS ;
-                         SWAP ;
-                         NIL operation ;
-                         DIG 2 ;
-                         CONS ;
-                         PAIR }
                        { SENDER ;
                          DUP 3 ;
                          CAR ;
@@ -561,7 +795,7 @@
                          CAR ;
                          GET ;
                          IF_NONE
-                           { DROP 3 ; PUSH string "Campaign Doesn't Exists" ; FAILWITH }
+                           { DROP 4 ; PUSH string "Campaign Doesn't Exists" ; FAILWITH }
                            { CAR ;
                              CDR ;
                              CAR ;
@@ -643,332 +877,296 @@
                              CAR ;
                              CAR ;
                              PAIR 3 ;
-                             DUP ;
-                             CAR ;
-                             SENDER ;
+                             PAIR ;
+                             EXEC } }
+                       { SENDER ;
+                         NOW ;
+                         DUP 4 ;
+                         CDR ;
+                         CAR ;
+                         CAR ;
+                         DUP 4 ;
+                         GET ;
+                         IF_NONE
+                           { DROP 5 ; PUSH string "Reward Doesn't Exists" ; FAILWITH }
+                           { PUSH string "No Stock Available" ;
+                             PUSH nat 0 ;
+                             DUP 3 ;
+                             CDR ;
                              COMPARE ;
-                             EQ ;
-                             IF { DUP 2 ; CAR ; CAR ; CAR ; CDR }
-                                { DUP 2 ;
-                                  CAR ;
-                                  CAR ;
-                                  CAR ;
-                                  CDR ;
-                                  DUP 2 ;
-                                  CAR ;
-                                  SENDER ;
-                                  PAIR ;
-                                  GET ;
-                                  IF_NONE { PUSH nat 0 } {} ;
-                                  DUP 2 ;
-                                  GET 4 ;
-                                  DUP 2 ;
-                                  COMPARE ;
-                                  LT ;
-                                  IF { DROP ; PUSH string "Not Enough Allowance" ; FAILWITH }
-                                     { DUP 3 ;
-                                       CAR ;
-                                       CAR ;
-                                       CAR ;
-                                       CDR ;
-                                       DUP 3 ;
-                                       GET 4 ;
-                                       DIG 2 ;
-                                       SUB ;
-                                       ABS ;
-                                       SOME ;
-                                       DUP 3 ;
-                                       CAR ;
-                                       SENDER ;
-                                       PAIR ;
-                                       UPDATE } } ;
-                             DUP 3 ;
-                             CAR ;
-                             CDR ;
-                             CAR ;
-                             CDR ;
-                             DUP 3 ;
-                             CAR ;
-                             GET ;
-                             IF_NONE { PUSH nat 0 } {} ;
-                             DUP 3 ;
-                             GET 4 ;
+                             GT ;
+                             IF { DROP } { FAILWITH } ;
+                             PUSH nat 1 ;
                              DUP 2 ;
-                             COMPARE ;
-                             LT ;
-                             IF { DROP 4 ; PUSH string "Not Enough Balance" ; FAILWITH }
-                                { DUP 4 ;
-                                  CAR ;
-                                  CDR ;
-                                  CAR ;
-                                  CDR ;
-                                  DUP 4 ;
-                                  GET 4 ;
-                                  DIG 2 ;
-                                  SUB ;
-                                  ABS ;
-                                  SOME ;
-                                  DUP 4 ;
-                                  CAR ;
-                                  UPDATE ;
-                                  DUP 3 ;
-                                  GET 4 ;
-                                  DUP 5 ;
-                                  CAR ;
-                                  CDR ;
-                                  CAR ;
-                                  CDR ;
-                                  DUP 5 ;
-                                  GET 3 ;
-                                  GET ;
-                                  IF_NONE { PUSH nat 0 } {} ;
-                                  ADD ;
-                                  SOME ;
-                                  DIG 3 ;
-                                  GET 3 ;
-                                  PAIR 3 ;
-                                  DUP 3 ;
-                                  CDR ;
-                                  DUP 4 ;
-                                  CAR ;
-                                  CDR ;
-                                  CDR ;
-                                  DIG 2 ;
-                                  UNPAIR 3 ;
-                                  UPDATE ;
-                                  DUP 5 ;
-                                  CAR ;
-                                  CDR ;
-                                  CAR ;
-                                  CAR ;
-                                  PAIR ;
-                                  PAIR ;
-                                  DIG 3 ;
-                                  CAR ;
-                                  CAR ;
-                                  PAIR ;
-                                  PAIR ;
-                                  DUP ;
-                                  CDR ;
-                                  DUP 2 ;
-                                  CAR ;
-                                  CDR ;
-                                  DUP 3 ;
-                                  CAR ;
-                                  CAR ;
-                                  CDR ;
-                                  DIG 4 ;
-                                  DIG 4 ;
-                                  CAR ;
-                                  CAR ;
-                                  CAR ;
-                                  CAR ;
-                                  PAIR ;
-                                  PAIR ;
-                                  PAIR ;
-                                  PAIR ;
-                                  NIL operation ;
-                                  PAIR } } } } } }
-           { IF_LEFT
-               { DIG 2 ;
-                 DROP ;
-                 IF_LEFT
-                   { DUP ;
-                     CAR ;
-                     SENDER ;
-                     COMPARE ;
-                     EQ ;
-                     IF { DUP 2 ; CAR ; CAR ; CAR ; CDR }
-                        { DUP 2 ;
-                          CAR ;
-                          CAR ;
-                          CAR ;
-                          CDR ;
-                          DUP 2 ;
-                          CAR ;
-                          SENDER ;
-                          PAIR ;
-                          GET ;
-                          IF_NONE { PUSH nat 0 } {} ;
-                          DUP 2 ;
-                          GET 4 ;
-                          DUP 2 ;
-                          COMPARE ;
-                          LT ;
-                          IF { DROP ; PUSH string "Not Enough Allowance" ; FAILWITH }
-                             { DUP 3 ;
-                               CAR ;
-                               CAR ;
-                               CAR ;
-                               CDR ;
-                               DUP 3 ;
-                               GET 4 ;
-                               DIG 2 ;
-                               SUB ;
-                               ABS ;
-                               SOME ;
-                               DUP 3 ;
-                               CAR ;
-                               SENDER ;
-                               PAIR ;
-                               UPDATE } } ;
-                     DUP 3 ;
-                     CAR ;
-                     CDR ;
-                     CAR ;
-                     CDR ;
-                     DUP 3 ;
-                     CAR ;
-                     GET ;
-                     IF_NONE { PUSH nat 0 } {} ;
-                     DUP 3 ;
-                     GET 4 ;
-                     DUP 2 ;
-                     COMPARE ;
-                     LT ;
-                     IF { DROP 4 ; PUSH string "Not Enough Balance" ; FAILWITH }
-                        { DUP 4 ;
-                          CAR ;
-                          CDR ;
-                          CAR ;
-                          CDR ;
-                          DUP 4 ;
-                          GET 4 ;
-                          DIG 2 ;
-                          SUB ;
-                          ABS ;
-                          SOME ;
-                          DUP 4 ;
-                          CAR ;
-                          UPDATE ;
-                          DUP 3 ;
-                          GET 4 ;
-                          DUP 5 ;
-                          CAR ;
-                          CDR ;
-                          CAR ;
-                          CDR ;
-                          DUP 5 ;
-                          GET 3 ;
-                          GET ;
-                          IF_NONE { PUSH nat 0 } {} ;
-                          ADD ;
-                          SOME ;
-                          DIG 3 ;
-                          GET 3 ;
-                          PAIR 3 ;
-                          DUP 3 ;
-                          CDR ;
-                          DUP 4 ;
-                          CAR ;
-                          CDR ;
-                          CDR ;
-                          DIG 2 ;
-                          UNPAIR 3 ;
-                          UPDATE ;
-                          DUP 5 ;
-                          CAR ;
-                          CDR ;
-                          CAR ;
-                          CAR ;
-                          PAIR ;
-                          PAIR ;
-                          DIG 3 ;
-                          CAR ;
-                          CAR ;
-                          PAIR ;
-                          PAIR ;
-                          DUP ;
-                          CDR ;
-                          DUP 2 ;
-                          CAR ;
-                          CDR ;
-                          DUP 3 ;
-                          CAR ;
-                          CAR ;
-                          CDR ;
-                          DIG 4 ;
-                          DIG 4 ;
-                          CAR ;
-                          CAR ;
-                          CAR ;
-                          CAR ;
-                          PAIR ;
-                          PAIR ;
-                          PAIR ;
-                          PAIR ;
-                          NIL operation ;
-                          PAIR } }
-                   { UNPAIR ;
-                     SENDER ;
-                     DUP 4 ;
-                     CAR ;
-                     CAR ;
-                     CDR ;
-                     CAR ;
-                     DUP 3 ;
-                     GET ;
-                     IF_NONE
-                       { DROP 4 ; PUSH string "Campaign Doesn't Already Exists" ; FAILWITH }
-                       { PUSH string "Only owner can update deadline." ;
-                         DUP 2 ;
-                         CDR ;
-                         CDR ;
-                         DIG 3 ;
+                             CDR ;
+                             SUB ;
+                             ABS ;
+                             DUP 6 ;
+                             CDR ;
+                             DUP 7 ;
+                             CAR ;
+                             CDR ;
+                             CDR ;
+                             CDR ;
+                             DUP 6 ;
+                             DIG 5 ;
+                             PAIR ;
+                             DUP 4 ;
+                             DUP 8 ;
+                             PAIR ;
+                             PAIR ;
+                             CONS ;
+                             DUP 7 ;
+                             CAR ;
+                             CDR ;
+                             CDR ;
+                             CAR ;
+                             PAIR ;
+                             DUP 7 ;
+                             CAR ;
+                             CDR ;
+                             CAR ;
+                             PAIR ;
+                             DUP 7 ;
+                             CAR ;
+                             CAR ;
+                             PAIR ;
+                             PAIR ;
+                             DUP ;
+                             CDR ;
+                             CDR ;
+                             DUP 2 ;
+                             CDR ;
+                             CAR ;
+                             CDR ;
+                             DUP 8 ;
+                             CDR ;
+                             CAR ;
+                             CAR ;
+                             DIG 4 ;
+                             DUP 6 ;
+                             CAR ;
+                             PAIR ;
+                             SOME ;
+                             DIG 7 ;
+                             UPDATE ;
+                             PAIR ;
+                             PAIR ;
+                             SWAP ;
+                             CAR ;
+                             PAIR ;
+                             SWAP ;
+                             CAR ;
+                             DIG 3 ;
+                             CAR ;
+                             CAR ;
+                             CAR ;
+                             CAR ;
+                             DIG 3 ;
+                             PAIR 3 ;
+                             PAIR ;
+                             EXEC } } }
+                   { DIG 2 ;
+                     DROP ;
+                     IF_LEFT
+                       { DUP ;
+                         CAR ;
+                         SENDER ;
                          COMPARE ;
                          EQ ;
-                         IF { DROP } { FAILWITH } ;
-                         PUSH string "Deadline should be greater than the campaign created time." ;
-                         DUP 4 ;
+                         IF { DUP 2 ; CAR ; CAR ; CAR ; CDR }
+                            { DUP 2 ;
+                              CAR ;
+                              CAR ;
+                              CAR ;
+                              CDR ;
+                              DUP 2 ;
+                              CAR ;
+                              SENDER ;
+                              PAIR ;
+                              GET ;
+                              IF_NONE { PUSH nat 0 } {} ;
+                              DUP 2 ;
+                              GET 4 ;
+                              DUP 2 ;
+                              COMPARE ;
+                              LT ;
+                              IF { DROP ; PUSH string "Not Enough Allowance" ; FAILWITH }
+                                 { DUP 3 ;
+                                   CAR ;
+                                   CAR ;
+                                   CAR ;
+                                   CDR ;
+                                   DUP 3 ;
+                                   GET 4 ;
+                                   DIG 2 ;
+                                   SUB ;
+                                   ABS ;
+                                   SOME ;
+                                   DUP 3 ;
+                                   CAR ;
+                                   SENDER ;
+                                   PAIR ;
+                                   UPDATE } } ;
                          DUP 3 ;
                          CAR ;
+                         CDR ;
                          CAR ;
+                         CDR ;
+                         DUP 3 ;
                          CAR ;
+                         GET ;
+                         IF_NONE { PUSH nat 0 } {} ;
+                         DUP 3 ;
+                         GET 4 ;
+                         DUP 2 ;
                          COMPARE ;
                          LT ;
-                         IF { DROP } { FAILWITH } ;
+                         IF { DROP 4 ; PUSH string "Not Enough Balance" ; FAILWITH }
+                            { DUP 4 ;
+                              CAR ;
+                              CDR ;
+                              CAR ;
+                              CDR ;
+                              DUP 4 ;
+                              GET 4 ;
+                              DIG 2 ;
+                              SUB ;
+                              ABS ;
+                              SOME ;
+                              DUP 4 ;
+                              CAR ;
+                              UPDATE ;
+                              DUP 3 ;
+                              GET 4 ;
+                              DUP 5 ;
+                              CAR ;
+                              CDR ;
+                              CAR ;
+                              CDR ;
+                              DUP 5 ;
+                              GET 3 ;
+                              GET ;
+                              IF_NONE { PUSH nat 0 } {} ;
+                              ADD ;
+                              SOME ;
+                              DIG 3 ;
+                              GET 3 ;
+                              PAIR 3 ;
+                              DUP 3 ;
+                              CDR ;
+                              DUP 4 ;
+                              CAR ;
+                              CDR ;
+                              CDR ;
+                              DIG 2 ;
+                              UNPAIR 3 ;
+                              UPDATE ;
+                              DUP 5 ;
+                              CAR ;
+                              CDR ;
+                              CAR ;
+                              CAR ;
+                              PAIR ;
+                              PAIR ;
+                              DIG 3 ;
+                              CAR ;
+                              CAR ;
+                              PAIR ;
+                              PAIR ;
+                              DUP ;
+                              CDR ;
+                              DUP 2 ;
+                              CAR ;
+                              CDR ;
+                              DUP 3 ;
+                              CAR ;
+                              CAR ;
+                              CDR ;
+                              DIG 4 ;
+                              DIG 4 ;
+                              CAR ;
+                              CAR ;
+                              CAR ;
+                              CAR ;
+                              PAIR ;
+                              PAIR ;
+                              PAIR ;
+                              PAIR ;
+                              NIL operation ;
+                              PAIR } }
+                       { UNPAIR ;
+                         SENDER ;
                          DUP 4 ;
-                         CDR ;
-                         DUP 5 ;
-                         CAR ;
-                         CDR ;
-                         DUP 6 ;
-                         CAR ;
-                         CAR ;
-                         CDR ;
-                         CDR ;
-                         DUP 7 ;
                          CAR ;
                          CAR ;
                          CDR ;
                          CAR ;
-                         DUP 5 ;
-                         CDR ;
-                         DUP 6 ;
-                         CAR ;
-                         CDR ;
-                         DIG 8 ;
-                         DIG 7 ;
-                         CAR ;
-                         CAR ;
-                         CAR ;
-                         PAIR ;
-                         PAIR ;
-                         PAIR ;
-                         SOME ;
-                         DIG 5 ;
-                         UPDATE ;
-                         PAIR ;
-                         DIG 3 ;
-                         CAR ;
-                         CAR ;
-                         CAR ;
-                         PAIR ;
-                         PAIR ;
-                         PAIR ;
-                         NIL operation ;
-                         PAIR } } }
-               { UNPAIR ;
+                         DUP 3 ;
+                         GET ;
+                         IF_NONE
+                           { DROP 4 ; PUSH string "Campaign Doesn't Already Exists" ; FAILWITH }
+                           { PUSH string "Only owner can update deadline." ;
+                             DUP 2 ;
+                             CDR ;
+                             CDR ;
+                             DIG 3 ;
+                             COMPARE ;
+                             EQ ;
+                             IF { DROP } { FAILWITH } ;
+                             PUSH string "Deadline should be greater than the campaign created time." ;
+                             DUP 4 ;
+                             DUP 3 ;
+                             CAR ;
+                             CAR ;
+                             CAR ;
+                             COMPARE ;
+                             LT ;
+                             IF { DROP } { FAILWITH } ;
+                             DUP 4 ;
+                             CDR ;
+                             DUP 5 ;
+                             CAR ;
+                             CDR ;
+                             DUP 6 ;
+                             CAR ;
+                             CAR ;
+                             CDR ;
+                             CDR ;
+                             DUP 7 ;
+                             CAR ;
+                             CAR ;
+                             CDR ;
+                             CAR ;
+                             DUP 5 ;
+                             CDR ;
+                             DUP 6 ;
+                             CAR ;
+                             CDR ;
+                             DIG 8 ;
+                             DIG 7 ;
+                             CAR ;
+                             CAR ;
+                             CAR ;
+                             PAIR ;
+                             PAIR ;
+                             PAIR ;
+                             SOME ;
+                             DIG 5 ;
+                             UPDATE ;
+                             PAIR ;
+                             DIG 3 ;
+                             CAR ;
+                             CAR ;
+                             CAR ;
+                             PAIR ;
+                             PAIR ;
+                             PAIR ;
+                             NIL operation ;
+                             PAIR } } } }
+               { DIG 2 ;
+                 DROP ;
+                 UNPAIR ;
                  SENDER ;
                  DUP 3 ;
                  ITER { DUP 5 ; CAR ; CAR ; CDR ; CDR ; PAIR ; DUP 6 ; SWAP ; EXEC ; DROP } ;

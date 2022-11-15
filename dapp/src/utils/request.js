@@ -29,6 +29,19 @@ export const jsonToIPFS = async (body) => {
     return await res.json();
 }
 
+export const fileToIPFS = async ({address, file}) => {
+    const data = new FormData()
+    data.append('file', file)
+    data.append('address', address)
+
+    const res = await fetch('/s/ipfs', {
+      method: 'POST',
+      body: data
+    })
+
+    return await res.json();
+}
+
 export const saveCampaign = async (body) => {
     const res = await fetch('/s/campaigns', {
       method: 'POST',
@@ -41,7 +54,24 @@ export const saveCampaign = async (body) => {
     return await res.json();
 }
 
+export const saveReward = async (body) => {
+    const res = await fetch('/s/rewards', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+
+    return await res.json();
+}
+
 export const getCampaignsFromCache = async () => {
     const res = await fetch('/s/campaigns');
+    return await res.json();
+}
+
+export const getRewardsFromCache = async () => {
+    const res = await fetch('/s/rewards');
     return await res.json();
 }

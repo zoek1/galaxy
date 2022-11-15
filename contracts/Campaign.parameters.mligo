@@ -23,7 +23,11 @@ let add_integration_twitter : action = AddIntegration ("TWITTER_FOLLOW", {
   provider = "twitter";
   active = true
 })
-
+let add_integration_email : action = AddIntegration ("ASK_QUESTION_0", {
+  name = "Email";
+  provider = "Loyal";
+  active = true
+})
 let add_integration_ask_1 : action = AddIntegration ("ASK_QUESTION_1", {
   name = "Open question";
   provider = "Loyal";
@@ -77,16 +81,18 @@ let add_integration_choose_5 : action = AddIntegration ("CHOOSE_OPTION_5", {
 })
 
 let add_campaign_test: action = AddCampaign {
-  campaign_id = "TEST_CAMPAIGN_3";
+  campaign_id = "TEST_CAMPAIGN_4";
   name = "Test Campaign";
   deadline = Tezos.get_now () + (86_400 * 15); (* In Fifteen Days *)
   integrations = Map.literal [
+    ("ASK_QUESTION_1", 15n);
     ("DISCORD_JOIN_CHANNEL", 100n);
     ("TWITTER_FOLLOW", 30n);
-    ("ASK_QUESTION_1", 15n);
+    ("ASK_QUESTION_2", 15n);
+    ("ASK_QUESTION_3", 15n);
     ("CHOOSE_OPTION_1", 18n);
   ];
-  metadata_url = "ipfs://QmbipEHWVN8Ah9FqNLocojr5EPQW2Duvfb4JSsz5b7f1zS"
+  metadata_url = "ipfs://Qmf6RBKw8XCMCfAjSFd126G7oLuwfAwiR7uTAPdhkiGqDE"
 }
 
 let add_campaign_brain_food: action = AddCampaign {
@@ -132,3 +138,7 @@ let update_brain_deadline: action = UpdateCampaignDeadline {
     campaign_id = "Brain_Food";
     deadline = Tezos.get_now () + (86_400 * 25); (* In Five Days *)
 }
+
+let add_reward: action = AddReward ("Brain_Food_1", 15n, 10n)
+
+let redeem_reward: action = RedeemReward "Brain_Food_1"

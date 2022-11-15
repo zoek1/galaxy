@@ -16,7 +16,7 @@ import toml
 import requests
 from werkzeug.urls import url_parse
 
-from models import User, Integration, DiscordIntegration, TwitterIntegration, TEXT_PLUGIN_NAMES, Campaign
+from models import User, Integration, DiscordIntegration, TwitterIntegration, TEXT_PLUGIN_NAMES, Campaign, Rewards
 
 # os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true"
 
@@ -28,6 +28,8 @@ app.config['MONGODB_SETTINGS'] = {
     "port": 27017,
     "alias": "default",
 }
+app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
+app.config['ALLOWED_EXTENSIONS'] = set(['.png', '.jpg', '.jpeg', '.gif'])
 db = MongoEngine(app)
 CORS(app)
 pytezos = pytezos.using(key=app.config['ACCOUNT'])
@@ -343,21 +345,38 @@ def check_twitter_reward(campaign_id, integration_type):
         'msg': 'User not followed account',
     }, 404
 
+
+def allowed_file(file):
+    filename = file.filename
+    if filename != '':
+        file_ext = os.path.splitext(filename)[1]
+        print(file_ext)
+        if file_ext in current_app.config['ALLOWED_EXTENSIONS']:
+            return True
+    return False
+
 @app.route("/s/ipfs", methods=['POST'])
 def upload_ipfs():
-    address = request.json.get('address')
-    payload = json.dumps(request.json.get('data'))
-
     url = "https://api.web3.storage/upload"
-
     headers = {
-        'Content-Type': 'application/json',
         'Authorization': f'Bearer {app.config["WEB3_STORAGE"]}'
     }
 
-    response = requests.request("POST", url, headers=headers, data=payload)
-
-    print(dir(response))
+    if request.content_type.startswith('application/json'):
+        address = request.json.get('address')
+        payload = json.dumps(request.json.get('data'))
+        headers['Content-Type'] = 'application/json'
+        response = requests.request("POST", url, headers=headers, data=payload)
+    else:
+        address = request.form.get('address')
+        file = request.files.get('file')
+        if file and allowed_file(file):
+            response = requests.request("POST", url, headers=headers, files={'file': file})
+        else:
+            return {
+                'status': 302,
+                'msg': f'File extension not allowed'
+            }
 
     return {
         'status': 200,
@@ -365,6 +384,33 @@ def upload_ipfs():
     }
 
 
+
+@app.route('/s/rewards', methods=['GET', 'POST'])
+def register_reward():
+    if request.method == 'GET':
+        return {
+            reward.reward_id: {
+                'owner': reward.owner,
+                'ipfs': reward.ipfs
+            } for reward in Rewards.objects().all()}
+
+    owner = request.json.get('address')
+    campaign_id = request.json.get('rewardId')
+    ipfs = request.json.get('ipfs')
+
+    reward = Rewards(reward_id=campaign_id, owner=owner, ipfs=ipfs)
+    if not owner or  not campaign_id:
+        return {
+           'status': 400,
+           'msg': 'Bad data provided'
+        }, 400
+
+    reward.save()
+
+    return {
+        'status': 201,
+        'msg': 'Campaign cached'
+    }, 201
 
 @app.route("/s/discord/")
 def discord_login():
