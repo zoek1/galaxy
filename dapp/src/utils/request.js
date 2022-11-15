@@ -70,3 +70,8 @@ export const getCampaignsFromCache = async () => {
     const res = await fetch('/s/campaigns');
     return await res.json();
 }
+
+export const getRewardsFromCache = async () => {
+    const res = await fetch('/s/rewards');
+    return await res.json();
+}

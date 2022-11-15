@@ -391,7 +391,7 @@ def register_reward():
         return {
             reward.reward_id: {
                 'owner': reward.owner,
-                'ipfs': reward
+                'ipfs': reward.ipfs
             } for reward in Rewards.objects().all()}
 
     owner = request.json.get('address')

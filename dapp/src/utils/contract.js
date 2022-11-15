@@ -1,5 +1,6 @@
 import {DAppClient, TezosOperationType} from "@airgap/beacon-sdk";
 import config from "../config";
+import {getJSONData} from "./ipfs";
 
 export const get_campaigns = async (address, contract, s=null) => {
     const storage = !s ? await contract.storage() : s;
@@ -61,6 +62,13 @@ export const getCampaigns = async (contract, campaignIds, s = null) => {
     const campaigns = await storage['campaigns']
 
     return await campaigns.getMultipleValues(campaignIds)
+}
+
+export const getRewards = async (contract,  s = null) => {
+    const storage = !s ? await contract.storage() : s;
+    const rewards = await storage['rewards']
+
+    return rewards;
 }
 
 export const getBalance = async (address, Tezos) => {
@@ -154,6 +162,32 @@ export const redeem = async (campaignId, integrationId, Tezos) => {
             },
           }],
         });
+
+        console.log(result);
+        return result;
+    } catch (error) {
+      console.log(
+        `The contract call failed and the following error was returned:`,
+        error?.data[1]?.with?.string
+      );
+    }
+}
+
+export const redeemReward = async (rewardId, Tezos) => {
+    const dAppClient = await getDapp();
+
+    try {
+        const result = await dAppClient.requestOperation({
+          operationDetails: [{
+            kind: TezosOperationType.TRANSACTION,
+            amount: "0",
+            destination: config.LOYALTY_CONTRACT,
+            parameters: {
+              entrypoint: "redeemReward",
+              value: { string: rewardId }
+            },
+          }],
+        })
 
         console.log(result);
         return result;

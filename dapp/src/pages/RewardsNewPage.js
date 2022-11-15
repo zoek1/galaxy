@@ -114,7 +114,7 @@ function RewardsNewPage(props) {
       const rewardResp = await saveReward({
         address,
         rewardId,
-        ipfs: uploadRes.ipfs
+        ipfs: ipfsRes.ipfs
       })
       console.log(rewardResp)
     }
